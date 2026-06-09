@@ -1,18 +1,22 @@
 # Pegelwatch
 
-**Pegelwatch** ist eine ODAS-App zur kompakten Visualisierung von Pegelständen am Neckar im Stadtgebiet Esslingen am Neckar. Die App verbindet Messstellen-Stammdaten mit aktuellen Messwerten, zeigt die Stationen auf einer Leaflet-Karte, bietet eine sortierbare Tabelle und öffnet pro Messstelle eine Detailansicht mit Verlaufsgrafik und lokaler Alarmschwelle.
+**Pegelwatch** ist eine ODAS-App zur kompakten Visualisierung von Pegelständen am Neckar im Stadtgebiet Esslingen am Neckar. Die App verbindet Messstellen-Stammdaten mit aktuellen Messwerten und bietet eine detailreiche Visualisierung der Messstelle über eine Diashow-Navigation, eine große Verlaufsgrafik mit flexiblen Zeitfenstern und lokaler Alarmschwelle.
 
 Die App ist für den [Open Data App Store](https://open-data-app-store.de/) umgesetzt und folgt der [Open-Data-App-Spezifikation](https://open-data-apps.github.io/open-data-app-docs/open-data-app-spezifikation/). Sie basiert auf dem `oda-generic`-Modell: App-spezifische Logik liegt in [app/app.js](app/app.js), App-spezifisches Styling in [app/app.css](app/app.css).
 
 ## Funktionen
 
-- Dashboard mit Kennzahlen für Messstellen gesamt, aktive Messstellen und lokale Warnungen
-- Interaktive Leaflet-Karte mit EPSG:31467-zu-WGS84-Koordinatentransformation über Proj4js
-- Sortierbare Messstellen-Tabelle mit aktuellem Pegelstand, Trend und Status
-- Detailansicht mit Stammdaten, Chart.js-Verlaufsgrafik und optionalem PEGELONLINE-Link
-- Lokale Alarmschwellen pro Messstelle, gespeichert im `localStorage` des Browsers
-- Direktmodus oder ODAS-Proxy-Modus über die Instanz-Konfiguration `proxyAktiv`
-- Automatische Aktualisierung der Daten alle fünf Minuten
+- **Diashow-Navigation**: Komfortables Umschalten zwischen den Messstellen über Vor-/Zurück-Buttons und ein direktes Dropdown-Auswahlfeld.
+- **Flexible Zeitfenster**: Anpassbare Visualisierung des Pegelverlaufs für verschiedene Intervalle (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr).
+- **Intelligente Datenaufbereitung**:
+  - Kontinuierliche Kurvendarstellung ohne Lücken für kurze Intervalle (bis zu 72 Std.).
+  - Automatisches Resampling in Datenkörbe (Bins) mit visuellen Lücken (`null`-Werte) für längere Intervalle (ab 7 Tage), damit Datenfehlbestände sofort im Chart erkennbar sind.
+- **Optimierte Verlaufsgrafik**: Verdoppelte Charthöhe, weicher Kurvenverlauf (Bezier-Kurven), interaktive Punktanzeige nur bei Hover (um optische Überladung zu vermeiden) und ein ansprechendes Wasser-Farbverlauf-Design.
+- **Unbeschränkter Datenabruf**: Seitenweise Abfrage von jeweils 500 Einträgen bis zur vollständigen Datenladung, begleitet von einer Ladeanimation und Fortschrittsanzeige.
+- **Stammdaten & Links**: Anzeige von Messstellen-Details (historisches Min/Max, Trend, Änderungsrate) inklusive Direktlinks zum Open Data Portal und zu PEGELONLINE.
+- **Lokale Alarmschwellen**: Individuell konfigurierbare Warnschwellen pro Messstelle, die im lokalen Speicher (`localStorage`) des Browsers hinterlegt werden.
+- **Netzwerkmodi**: Wahlweise Direktabruf oder abgesicherter ODAS-Proxy-Modus über die Instanz-Konfiguration (`proxyAktiv`).
+- **Auto-Refresh**: Automatische Datenaktualisierung alle fünf Minuten.
 
 Die App zeigt lokale optische Warnungen auf Basis frei gesetzter Browser-Schwellen. Sie ersetzt keine amtliche Warnmeldung.
 
@@ -91,8 +95,8 @@ Die Tests decken CKAN-URL-Erzeugung, ODAS-Proxy-Pfadextraktion, deutsche Pegel-Z
 
 | Datei | Beschreibung |
 | --- | --- |
-| [app/app.js](app/app.js) | Datenabruf, CKAN/Proxy-Logik, Join, Karte, Tabelle, Detailansicht, Chart und Auto-Refresh |
-| [app/app.css](app/app.css) | App-spezifisches Dashboard- und Karten-Styling |
+| [app/app.js](app/app.js) | Datenabruf, CKAN/Proxy-Logik, Join, Diashow-Steuerung, Detailansicht, Chart-Verlaufsgrafik und Auto-Refresh |
+| [app/app.css](app/app.css) | App-spezifisches Styling des Dashboards und der Steuerelemente |
 | [app-package.json](app-package.json) | ODAS-Metadaten und Instanz-Konfigurationsfelder |
 | [odas-config/config.json](odas-config/config.json) | Lokale Testkonfiguration |
 | [assets/schema.json](assets/schema.json) | Frictionless-ähnliches Schema der verknüpften Tabellenansicht |

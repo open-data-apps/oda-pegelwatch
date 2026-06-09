@@ -2,12 +2,12 @@
 
 ## 09.06.2026 (Version 1.2.0)
 
-- Fix: Karten-Tiles nicht sichtbar – Tile-Server von CARTO auf OpenStreetMap gewechselt (CARTO-Tiles wurden durch ODAS-System-CSP blockiert).
-- Fix: Leaflet-CSS wird jetzt als Promise geladen, sodass die Karte erst nach vollständigem CSS-Load initialisiert wird.
-- Fix: Fallback-Höhe (430px) für `#pegel-map` falls externe CSS verzögert lädt.
-- Fix: Marker-Klick rief `renderDashboard()` innerhalb des Leaflet-Event-Stacks auf – via `setTimeout(..., 0)` behoben.
-- Fix: Marker-Überlappung durch `iconSize:null` und überarbeitete Marker-CSS (transform-basierte Zentrierung).
-- Fix: `overflow:hidden` auf `.pegelwatch-panel` blockierte Leaflet-Controls – via `:has(#pegel-map)` auf `overflow:visible` gesetzt.
+- Feat: Redesign des Dashboards – Umstellung auf eine Diashow-Navigation (Dropdown-Auswahl & Nächste/Vorherige-Buttons) zur fokussierten Darstellung einzelner Messstellen. Vollständige Entfernung von Karte und Tabelle.
+- Feat: Flexibler Zeitraum-Wähler für die Verlaufsgrafik (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) zur Anpassung des angezeigten Zeitfensters.
+- Feat: Intelligentes Resampling mit Erkennung unvollständiger Daten – kurze Intervalle (bis 72 Std.) werden kontinuierlich gezeichnet, ab 7 Tagen wird in Datenkörbe (Bins) gruppiert und Fehlwerte werden als Lücken (`null`-Werte) visualisiert.
+- Feat: Optimierte Verlaufsgrafik – verdoppelte Charthöhe, weicher Kurvenverlauf (Bezier-Kurven), Reduzierung der überfüllten X-Achsen-Beschriftungen und Punkt-Einblendung nur bei Hover zur Vermeidung von visuellem Rauschen.
+- Feat: Paging für unbeschränkten Datenabruf – Datensätze werden in 500er-Schritten vollständig geladen, unterstützt durch eine Ladeanimation mit Fortschrittsanzeige.
+- Feat: Quellverlinkungen zum Open Data Portal und PEGELONLINE auf der Beschreibungsseite und im Detailbereich hinterlegt.
 
 ## 05.06.2026 (Version 1.1.0)
 
