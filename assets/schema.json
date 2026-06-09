@@ -1,0 +1,81 @@
+{
+  "profile": "tabular-data-resource",
+  "name": "pegelwatch-verknuepfte-pegelwerte",
+  "title": "Pegelwatch - verknuepfte Pegelwerte",
+  "description": "Schema der in der App dargestellten, aus Messstellen-Stammdaten und Messwerten verknuepften Tabellenansicht.",
+  "fields": [
+    {
+      "name": "pegel_id",
+      "title": "Pegel-ID",
+      "type": "string",
+      "description": "Eindeutige ID der Messstelle aus den Stammdaten."
+    },
+    {
+      "name": "name",
+      "title": "Messstelle",
+      "type": "string",
+      "description": "Name der Pegel-Messstelle."
+    },
+    {
+      "name": "gewaesser",
+      "title": "Gewaesser",
+      "type": "string",
+      "description": "Name des Gewaessers."
+    },
+    {
+      "name": "standort",
+      "title": "Standort",
+      "type": "string",
+      "description": "Kommunaler Standort oder Ortsangabe."
+    },
+    {
+      "name": "nummer",
+      "title": "Amtliche Nummer",
+      "type": "string",
+      "description": "Amtliche Nummer der Messstelle, falls vorhanden."
+    },
+    {
+      "name": "rechtswert",
+      "title": "Rechtswert",
+      "type": "number",
+      "description": "Ost-Koordinate der Messstelle in EPSG:31467."
+    },
+    {
+      "name": "hochwert",
+      "title": "Hochwert",
+      "type": "number",
+      "description": "Nord-Koordinate der Messstelle in EPSG:31467."
+    },
+    {
+      "name": "zeitstempel",
+      "title": "Zeitstempel",
+      "type": "datetime",
+      "description": "Zeitpunkt der aktuellsten beruecksichtigten Messung."
+    },
+    {
+      "name": "pegelstand_m",
+      "title": "Pegelstand in Metern",
+      "type": "number",
+      "description": "Normalisierter Pegelstand in Metern."
+    },
+    {
+      "name": "trend",
+      "title": "Trend",
+      "type": "string",
+      "description": "Aus den letzten beiden Messwerten abgeleiteter Trend: steigend, fallend, stabil oder unbekannt."
+    },
+    {
+      "name": "alarmstatus",
+      "title": "Alarmstatus",
+      "type": "string",
+      "description": "Status auf Basis der lokal im Browser gesetzten Alarmschwelle."
+    },
+    {
+      "name": "pegelonline_url",
+      "title": "PEGELONLINE-Link",
+      "type": "string",
+      "format": "uri",
+      "description": "Optionaler Direktlink zur PEGELONLINE-Detailseite."
+    }
+  ]
+}
