@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -93,7 +93,8 @@
       "default": [
         "_multiline_",
         "<p>Pegelwatch macht Wasserstandsdaten fuer den Neckar im Stadtgebiet Esslingen kompakt zugaenglich. Die Startseite verbindet eine Diashow-Navigation, Kennzahlen, eine Verlaufsgrafik und Stammdaten, damit aktuelle Messwerte und Stationsinformationen direkt erfassbar sind.</p>",
-        "<p>Die App richtet sich an interessierte Buergerinnen und Buerger, Menschen mit Bezug zu Wassersport oder Uferwegen sowie an fachlich Interessierte im Hochwasser- und Gewaesserkontext. Sie ersetzt keine amtliche Warnmeldung, sondern bereitet die offenen Pegeldaten als Orientierungshilfe auf.</p>",
+        "<h2>Fuer wen ist diese App?</h2>",
+        "<p>Die App richtet sich an interessierte Buergerinnen und Buerger, Menschen mit Bezug zu Wassersport oder Uferwegen sowie an fachlich Interessierte im Hochwasser- und Gewaesserkontext. Voraussetzung ist kein spezielles Datenwissen – wer den Wasserstand am Gewaesser im Blick behalten moechte, kann die App direkt nutzen. Sie ersetzt keine amtliche Warnmeldung, sondern bereitet die offenen Pegeldaten als Orientierungshilfe auf.</p>",
         "<h2>Inhalte und Bedienung</h2>",
         "<p>Ueber die Diashow-Navigation (Vor-/Zurueck-Buttons sowie ein direktes Dropdown-Auswahlfeld) laesst sich die gewuenschte Messstelle auswaehlen. Fuer die ausgewaehlte Station werden Stammdaten, der aktuelle Wert inklusive Trend und Aenderungsrate, und eine grosse Verlaufsgrafik angezeigt.</p>",
         "<p>Die Verlaufsgrafik laesst sich ueber ein Dropdown auf verschiedene Zeitfenster einstellen (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr). Fuer kurze Zeitraeume wird die Messhistorie lueckenlos gezeichnet, waehrend bei Zeitraeumen ab 7 Tagen ein Resampling stattfindet, das eventuelle Datenluecken als sichtbare Auslassungen im Chart anzeigt, um Fehlwerte transparent zu machen.</p>",
@@ -191,6 +192,33 @@
       },
       "default": "nein",
       "erforderlich": "ja"
+    },
+    "weiterfuehrendeLinks": {
+      "label": "Weiterfuehrende Links",
+      "hilfe": "Verwandte Datensaetze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<ul><li><a href='https://www.pegelonline.wsv.de/' target='_blank'>PEGELONLINE (WSV)</a></li><li><a href='https://open-data-app-store.de' target='_blank'>Open Data App Store</a></li></ul>",
+      "erforderlich": "nein"
+    },
+    "datenquelleHinweis": {
+      "label": "Methodik / Datenquelle-Hinweis",
+      "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
+      "format": {
+        "typ": "markdown"
+      },
+      "default": "<p>Die Pegeldaten stammen von <a href=\"https://www.pegelonline.wsv.de/\" target=\"_blank\" rel=\"noopener\">PEGELONLINE</a>, dem bundesweiten Pegelportal der Wasserstraßen- und Schifffahrtsverwaltung des Bundes (WSV). Die Messwerte werden aus den CKAN-DataStore-Ressourcen des konfigurierten Open-Data-Portals geladen und alle fünf Minuten aktualisiert.</p><p>Angezeigt werden die in der Quelle verfügbaren Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle ab.</p>",
+      "erforderlich": "nein"
+    },
+    "datenStand": {
+      "label": "Datenstand",
+      "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
+      "format": {
+        "typ": "string"
+      },
+      "default": "Stand: laufend von PEGELONLINE (WSV)",
+      "erforderlich": "nein"
     },
     "sprache": {
       "label": "Sprache der App",

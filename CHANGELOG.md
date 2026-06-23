@@ -1,5 +1,14 @@
 # Changelog - Pegelwatch
 
+## 16.06.2026 (Version 1.4.0)
+
+- ENH: Methodikbox (ausklappbar) mit Datenquelle-Hinweis und Datenstand ergänzt (`datenquelleHinweis`, `datenStand`).
+
+## 16.06.2026 (Version 1.3.0)
+
+- ENH: Schale-4-Verstaendlichkeit ergaenzt – „Fuer wen ist diese App?"-Block in Beschreibung und README.
+- ENH: Konfigurierbarer Abschnitt „Weitere Informationen" mit weiterfuehrenden Links (neues Feld `weiterfuehrendeLinks`, leer = ausgeblendet).
+
 ## 09.06.2026 (Version 1.2.0)
 
 - Feat: Redesign des Dashboards – Umstellung auf eine Diashow-Navigation (Dropdown-Auswahl & Nächste/Vorherige-Buttons) zur fokussierten Darstellung einzelner Messstellen. Vollständige Entfernung von Karte und Tabelle.

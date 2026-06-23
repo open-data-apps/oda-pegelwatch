@@ -109,7 +109,43 @@ function normalizeAppConfig(config = {}) {
     ),
     proxyAktiv: String(config.proxyAktiv || "nein").trim().toLowerCase(),
     urlDaten: String(config.urlDaten || ""),
+    weiterfuehrendeLinks: String(config.weiterfuehrendeLinks || "").trim(),
+    datenquelleHinweis: String(config.datenquelleHinweis || "").trim(),
+    datenStand: String(config.datenStand || "").trim(),
   };
+}
+
+function renderWeitereInfos(config = {}) {
+  const links = String(config.weiterfuehrendeLinks || "").trim();
+  if (!links) return "";
+  return (
+    '<section class="pegelwatch-panel mb-4">' +
+    '<div class="pegelwatch-panel-heading border-bottom pb-2 mb-3 px-3 pt-3">' +
+    '<h2 class="h5 mb-0">Weitere Informationen</h2></div>' +
+    '<div class="px-3 pb-3">' +
+    links +
+    "</div></section>"
+  );
+}
+
+function renderMethodikbox(config = {}) {
+  const hinweis = String(config.datenquelleHinweis || "").trim();
+  const stand = String(config.datenStand || "").trim();
+  if (!hinweis && !stand) return "";
+  const standHtml = stand
+    ? `<p class="text-muted small mb-2">${escapeHtml(stand)}</p>`
+    : "";
+  return (
+    '<section class="pegelwatch-panel mb-4">' +
+    '<button class="pegelwatch-methodik-toggle collapsed border-bottom w-100 px-3 pt-3 pb-2" type="button" data-bs-toggle="collapse" data-bs-target="#pegelwatch-methodik-body" aria-expanded="false" aria-controls="pegelwatch-methodik-body">' +
+    '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
+    '<span class="pegelwatch-methodik-chevron" aria-hidden="true">&#9662;</span>' +
+    "</button>" +
+    '<div id="pegelwatch-methodik-body" class="collapse"><div class="px-3 py-3">' +
+    standHtml +
+    hinweis +
+    "</div></div></section>"
+  );
 }
 
 function teardownPegelwatch(container) {
@@ -713,6 +749,9 @@ function renderDashboard(container, state) {
       ` : `
       <div class="alert alert-info">Keine Messstellen-Daten vorhanden. Bitte laden Sie die Daten neu.</div>
       `}
+
+      ${renderMethodikbox(state.config)}
+      ${renderWeitereInfos(state.config)}
     </section>
   `;
 

@@ -20,6 +20,10 @@ Die App ist für den [Open Data App Store](https://open-data-app-store.de/) umge
 
 Die App zeigt lokale optische Warnungen auf Basis frei gesetzter Browser-Schwellen. Sie ersetzt keine amtliche Warnmeldung.
 
+## Für wen ist diese App?
+
+Diese App richtet sich an interessierte Bürgerinnen und Bürger, Menschen mit Bezug zu Wassersport oder Uferwegen sowie an kommunale Stellen. Voraussetzung ist kein spezielles Datenwissen – wer den Wasserstand am Gewässer im Blick behalten möchte, kann die App direkt nutzen.
+
 ## Datenquelle
 
 Das App-Konzept sieht zwei CKAN-DataStore-Ressourcen vor:

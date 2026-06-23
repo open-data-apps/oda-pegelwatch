@@ -448,3 +448,21 @@
     margin-left: 0 !important;
   }
 }
+
+/* Methodikbox toggle */
+.pegelwatch-methodik-toggle {
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+}
+.pegelwatch-methodik-chevron {
+  transition: transform 0.2s ease;
+  font-size: 1.25rem;
+}
+.pegelwatch-methodik-toggle[aria-expanded="true"] .pegelwatch-methodik-chevron {
+  transform: rotate(180deg);
+}
