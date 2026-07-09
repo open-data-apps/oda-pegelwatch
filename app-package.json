@@ -117,7 +117,14 @@
       },
       "default": [
         "_multiline_",
-        "<p>Bitte hinterlegen Sie hier das Impressum des betreibenden Open-Data-Portals beziehungsweise der jeweiligen ODAS-Instanz.</p>"
+        "<h4>Anbieter</h4>",
+        "<p>{{{odp.anbieter.orgName}}}<br>{{{odp.anbieter.orgUnit}}}</p>",
+        "<p>{{odp.anbieter.strasse}}<br>{{odp.anbieter.plzort}}</p>",
+        "<p>Website: <a href='{{odp.anbieter.url-extern}}' target='_blank'>{{odp.anbieter.url-extern}}</a></p>",
+        "<h4>Ansprechpartner</h4>",
+        "<p>{{odp.anbieter.kontakt-bezeichnung}}<br>{{odp.anbieter.name}}</p>",
+        "<h4>Kontakt</h4>",
+        "<p>Tel.: {{odp.anbieter.tel}}<br>E-Mail: <a href='mailto:{{odp.anbieter.email}}'>{{odp.anbieter.email}}</a></p>"
       ],
       "erforderlich": "ja"
     },
