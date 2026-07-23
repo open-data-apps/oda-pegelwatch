@@ -362,45 +362,82 @@ function normalizeCkanActionBase(apiurl) {
   return `${baseUrl}/`;
 }
 
-function isOdasProxyEnabled(config = {}) {
-  return String(config.proxyAktiv || "").trim().toLowerCase() === "ja";
+function isOdasProxyEnabled(configdata = {}) {
+  return String(configdata.proxyAktiv || "").trim().toLowerCase() === "ja";
 }
 
 function extractPathFromUrl(url) {
   try {
-    const parsed = new URL(url);
-    return parsed.pathname + parsed.search;
-  } catch (error) {
+    const parsedUrl = new URL(url);
+    return parsedUrl.pathname + parsedUrl.search;
+  } catch (_error) {
     return String(url || "");
   }
 }
 
-function getOdasProxyEndpoint(targetUrl) {
-  const appPath = window.location.pathname
-    .replace(/\/index\.html?$/i, "")
-    .replace(/\/+$/, "");
-  return `${appPath}/odp-data?path=${encodeURIComponent(extractPathFromUrl(targetUrl))}`;
+function getOdasAppBasePath(pathname) {
+  let appPath =
+    pathname === undefined
+      ? typeof window !== "undefined"
+        ? window.location.pathname
+        : "/"
+      : String(pathname || "/");
+
+  if (!appPath.endsWith("/")) {
+    const lastSlashIndex = appPath.lastIndexOf("/");
+    const lastSegment = appPath.substring(lastSlashIndex + 1);
+    if (lastSegment.includes(".")) {
+      appPath = appPath.substring(0, lastSlashIndex + 1);
+    }
+  }
+
+  return appPath.replace(/\/+$/, "");
 }
 
-async function fetchOdasResource(targetUrl, config = {}) {
-  if (isOdasProxyEnabled(config) && typeof window !== "undefined") {
-    const response = await fetch(getOdasProxyEndpoint(targetUrl), { method: "POST" });
-    if (!response.ok) {
-      throw new Error(`ODAS-Proxy meldet HTTP ${response.status}.`);
-    }
+function getOdasProxyEndpoint(targetUrl, pathname) {
+  const appPath = getOdasAppBasePath(pathname);
+  return `${appPath}/odp-data?path=${encodeURIComponent(
+    extractPathFromUrl(targetUrl),
+  )}`;
+}
 
-    const proxyData = await response.json();
-    if (!proxyData || typeof proxyData.content !== "string") {
-      throw new Error("ODAS-Proxy-Antwort enthaelt keinen content-String.");
-    }
-    return proxyData.content;
-  }
+async function fetchViaOdasProxy(targetUrl) {
+  const response = await fetch(getOdasProxyEndpoint(targetUrl), {
+    method: "POST",
+  });
 
-  const response = await fetch(targetUrl);
   if (!response.ok) {
-    throw new Error(`Direkter Datenabruf meldet HTTP ${response.status}.`);
+    throw new Error(`ODAS-Proxy-Fehler: HTTP ${response.status}`);
   }
-  return response.text();
+
+  const proxyData = await response.json();
+  if (!proxyData || typeof proxyData.content !== "string") {
+    throw new Error("ODAS-Proxy-Antwort enthält keinen content-String.");
+  }
+
+  return proxyData.content;
+}
+
+async function fetchOdasResource(targetUrl, configdata = {}) {
+  if (isOdasProxyEnabled(configdata)) {
+    return fetchViaOdasProxy(targetUrl);
+  }
+
+  try {
+    const response = await fetch(targetUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return response.text();
+  } catch (error) {
+    throw new Error(
+      `Direkter Datenabruf fehlgeschlagen (${error.message}). Bitte prüfen Sie die Daten-URL und die CORS-Freigabe der Datenquelle.`,
+    );
+  }
+}
+
+async function fetchOdasJson(targetUrl, configdata = {}) {
+  return JSON.parse(await fetchOdasResource(targetUrl, configdata));
 }
 
 function mergeStationsWithMeasurements(stations = [], measurements = []) {
@@ -1425,6 +1462,9 @@ if (typeof module !== "undefined" && module.exports) {
     convertEpsg31467ToWgs84,
     extractPathFromUrl,
     fetchOdasResource,
+    fetchOdasJson,
+    getOdasAppBasePath,
+    getOdasProxyEndpoint,
     formatChartLabel,
     isOdasProxyEnabled,
     mergeStationsWithMeasurements,
