@@ -1,5 +1,9 @@
 # Changelog - Pegelwatch
 
+## 1.8.0 - 2026-07-31
+- CHG: toter Konfigurationsschlüssel lizenz entfernt (F-17)
+- CHG: brandingCSS und brandingCSSFile als Base-Abhängigkeiten deklariert und lokal gespiegelt (F-17)
+
 ## 1.7.0 - 2026-07-30
 
 - **FIX:** Laufzeitfehler nach dem Laden der Konfiguration werden jetzt sichtbar gemeldet; `handleRouting()` wird `await`et und besitzt einen Fehlerpfad. Bisher blieb die Seite bei einem Fehler im Seitenaufbau stumm leer

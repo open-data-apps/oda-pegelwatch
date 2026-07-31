@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -37,16 +37,6 @@
       "format": {
         "typ": "string",
         "laenge": 80
-      },
-      "erforderlich": "ja"
-    },
-    "lizenz": {
-      "label": "Lizenz",
-      "hilfe": "Angabe der Datenlizenz fuer die eingebundenen Pegeldaten.",
-      "default": "Datenlizenz Deutschland - Zero - Version 2.0",
-      "format": {
-        "typ": "string",
-        "laenge": 120
       },
       "erforderlich": "ja"
     },
@@ -236,6 +226,26 @@
       },
       "default": "de",
       "erforderlich": "ja"
+    },
+    "brandingCSS": {
+      "label": "Zusätzliches Branding-CSS",
+      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "string",
+        "laenge": 10000
+      },
+      "erforderlich": "nein"
+    },
+    "brandingCSSFile": {
+      "label": "Branding-CSS-Datei",
+      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+      "default": "",
+      "format": {
+        "typ": "url",
+        "laenge": 500
+      },
+      "erforderlich": "nein"
     }
   }
 }
