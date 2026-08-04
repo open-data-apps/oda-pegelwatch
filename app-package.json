@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -14,9 +14,20 @@
     "Lokale Alarmschwellen werden ausschliesslich im Browser gespeichert und dienen als optische Orientierung innerhalb der App. ",
     "Die Standardkonfiguration verweist auf ein CKAN-Musterportal aus dem App-Konzept; fuer den produktiven Betrieb werden die Instanzfelder im ODAS auf das reale Open-Data-Portal gesetzt."
   ],
-  "tags-funktion": ["Umwelt", "Dashboard", "Visualisierung"],
-  "tags-dateityp": ["API", "JSON"],
-  "tags-datenart": ["Pegel", "Messwerte", "Messstellen"],
+  "tags-funktion": [
+    "Umwelt",
+    "Dashboard",
+    "Visualisierung"
+  ],
+  "tags-dateityp": [
+    "API",
+    "JSON"
+  ],
+  "tags-datenart": [
+    "Pegel",
+    "Messwerte",
+    "Messstellen"
+  ],
   "screenshots": [
     "assets/Desktop_Screenshot.png",
     "assets/Mobile_Screenshot.png"
@@ -126,7 +137,8 @@
       },
       "default": [
         "_multiline_",
-        "<p>Diese App verarbeitet keine personenbezogenen Daten. Lokale Alarmschwellen werden ausschliesslich im localStorage des verwendeten Browsers gespeichert und koennen dort jederzeit geloescht werden.</p>"
+        "<p>Diese App verarbeitet keine personenbezogenen Daten. Lokale Alarmschwellen werden ausschliesslich im localStorage des verwendeten Browsers gespeichert und koennen dort jederzeit geloescht werden.</p>",
+        "<h3>Beim Aufruf kontaktierte Drittanbieter</h3><p>Beim Aufruf dieser App werden Bibliotheken bzw. Kartendienste von folgenden externen Servern geladen. Dabei werden IP-Adresse und User-Agent der Besucher:innen an diese Anbieter übertragen:</p><ul><li><strong>cdn.jsdelivr.net</strong> — Bootstrap (Layout- und UI-Framework), Chart.js (Diagramme)</li><li><strong>tile.openstreetmap.org</strong> — Kartenkacheln (OpenStreetMap)</li></ul>"
       ],
       "erforderlich": "ja"
     },
@@ -185,7 +197,10 @@
       "hilfe": "Legt fest, ob Datenabrufe direkt oder ueber den ODAS-CORS-Proxy /app/odp-data erfolgen.",
       "format": {
         "typ": "dropdown",
-        "optionen": ["nein", "ja"]
+        "optionen": [
+          "nein",
+          "ja"
+        ]
       },
       "default": "nein",
       "erforderlich": "ja"
@@ -222,7 +237,9 @@
       "hilfe": "Angabe der App-Sprache.",
       "format": {
         "typ": "dropdown",
-        "optionen": ["de"]
+        "optionen": [
+          "de"
+        ]
       },
       "default": "de",
       "erforderlich": "ja"
