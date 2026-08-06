@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -138,7 +138,7 @@
       "default": [
         "_multiline_",
         "<p>Diese App verarbeitet keine personenbezogenen Daten. Lokale Alarmschwellen werden ausschliesslich im localStorage des verwendeten Browsers gespeichert und koennen dort jederzeit geloescht werden.</p>",
-        "<h3>Beim Aufruf kontaktierte Drittanbieter</h3><p>Beim Aufruf dieser App werden Bibliotheken bzw. Kartendienste von folgenden externen Servern geladen. Dabei werden IP-Adresse und User-Agent der Besucher:innen an diese Anbieter übertragen:</p><ul><li><strong>tile.openstreetmap.org</strong> — Kartenkacheln (OpenStreetMap)</li></ul>"
+        "<h3>Beim Aufruf kontaktierte Drittanbieter</h3><p>Folgende externe Server werden kontaktiert. Dabei werden IP-Adresse und User-Agent der Besucher:innen an diese Anbieter übertragen:</p><ul><li><strong>tile.openstreetmap.org</strong> — Kartenkacheln (OpenStreetMap)</li></ul>"
       ],
       "erforderlich": "ja"
     },
