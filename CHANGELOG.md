@@ -1,5 +1,11 @@
 # Changelog - Pegelwatch
 
+## 1.11.0 - 2026-08-04
+- FIX: Datenschutzhinweis nach Vendoring aktualisiert (F-07 Teil 2) — „Beim Aufruf kontaktierte Drittanbieter" nennt die vendorten Bibliotheken nicht mehr; weiterhin extern geladene Dienste (Kartenkacheln) bleiben genannt
+
+## 1.10.0 - 2026-08-04
+- FIX: Bootstrap und Chart.js vendored in `app/vendor/` statt von CDN geladen (F-07 Teil 2) — Standalone-Betrieb lädt diese Bibliotheken nicht mehr extern
+
 ## 1.9.0 - 2026-08-04
 - FIX: Drittanbieter (CDN, Kartendienste) in `datenschutz`-Default und README dokumentiert (F-07 Teil 1)
 - FIX: Bootstrap CSS/JS auf einheitlich 5.3.8 gezogen (vorher gemischt 5.3.0/5.3.1 bzw. 5.3.0/5.3.0) (F-31)
