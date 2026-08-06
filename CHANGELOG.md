@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.12.0 - 2026-08-06
+- FIX: Base auf Template oda-generic 1.6.0 vereinheitlicht (Hook renderPageOverride)
+
 ## 1.11.0 - 2026-08-04
 - FIX: Datenschutzhinweis nach Vendoring aktualisiert (F-07 Teil 2) — „Beim Aufruf kontaktierte Drittanbieter" nennt die vendorten Bibliotheken nicht mehr; weiterhin extern geladene Dienste (Kartenkacheln) bleiben genannt
 
