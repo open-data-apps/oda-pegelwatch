@@ -5,6 +5,9 @@
  * Template-Dateien wie app-base.js bleiben unveraendert.
  */
 
+let pegelInstanzZaehler = 0;
+let pegelUid = "i1";
+
 const PEGELWATCH_DEFAULTS = {
   title: "Pegelwatch",
   apiurl: "https://open-data-musterstadt.ckan.de/api/3/action/",
@@ -51,6 +54,8 @@ const GERMAN_MONTHS = {
 const dependencyCache = {};
 
 function app(configdata = {}, enclosingHtmlDivElement) {
+  pegelUid = "i" + ++pegelInstanzZaehler;
+
   if (!enclosingHtmlDivElement) {
     return "";
   }
@@ -58,6 +63,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   teardownPegelwatch(enclosingHtmlDivElement);
 
   const state = {
+    uid: pegelUid,
     config: normalizeAppConfig(configdata),
     stations: [],
     measurements: [],
@@ -128,7 +134,7 @@ function renderWeitereInfos(config = {}) {
   );
 }
 
-function renderMethodikbox(config = {}) {
+function renderMethodikbox(config = {}, uid) {
   const hinweis = String(config.datenquelleHinweis || "").trim();
   const stand = String(config.datenStand || "").trim();
   if (!hinweis && !stand) return "";
@@ -137,11 +143,11 @@ function renderMethodikbox(config = {}) {
     : "";
   return (
     '<section class="pegelwatch-panel mb-4">' +
-    '<button class="pegelwatch-methodik-toggle collapsed border-bottom w-100 px-3 pt-3 pb-2" type="button" data-bs-toggle="collapse" data-bs-target="#pegelwatch-methodik-body" aria-expanded="false" aria-controls="pegelwatch-methodik-body">' +
+    '<button class="pegelwatch-methodik-toggle collapsed border-bottom w-100 px-3 pt-3 pb-2" type="button" data-bs-toggle="collapse" data-bs-target="#pegelwatch-methodik-body-' + uid + '" aria-expanded="false" aria-controls="pegelwatch-methodik-body-' + uid + '">' +
     '<h2 class="h5 mb-0">Methodik &amp; Datenquelle</h2>' +
     '<span class="pegelwatch-methodik-chevron" aria-hidden="true">&#9662;</span>' +
     "</button>" +
-    '<div id="pegelwatch-methodik-body" class="collapse"><div class="px-3 py-3">' +
+    '<div id="pegelwatch-methodik-body-' + uid + '" class="collapse"><div class="px-3 py-3">' +
     standHtml +
     hinweis +
     "</div></div></section>"
@@ -787,7 +793,7 @@ function renderDashboard(container, state) {
       <div class="alert alert-info">Keine Messstellen-Daten vorhanden. Bitte laden Sie die Daten neu.</div>
       `}
 
-      ${renderMethodikbox(state.config)}
+      ${renderMethodikbox(state.config, state.uid)}
       ${renderWeitereInfos(state.config)}
     </section>
   `;

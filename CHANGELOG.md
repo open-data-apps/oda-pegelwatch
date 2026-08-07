@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.15.0 - 2026-08-07
+- FIX: Bootstrap-Ziele der Methodikbox instanzeindeutig gemacht (F-32) – `data-bs-target`, `aria-controls` und die zugehoerige div-ID der ausklappbaren Methodikbox erhalten eine per Instanz vergebene Kennung, damit zwei Instanzen derselben App auf einer Seite nicht mehr kollidieren
+
 ## 1.12.0 - 2026-08-06
 - FIX: Base auf Template oda-generic 1.6.0 vereinheitlicht (Hook renderPageOverride)
 
