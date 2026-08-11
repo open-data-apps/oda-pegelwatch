@@ -74,7 +74,7 @@ Empfohlene Einstellungen:
 }
 ```
 
-Für Live-Server-Tests mit [odas-config/config.json](odas-config/config.json) muss der bereits vorhandene localhost-Block in `app/app-base.js` temporär aktiviert werden. Vor ZIP-Erstellung oder ODAS-Auslieferung muss dieser Block wieder auskommentiert sein, damit die App im ODAS ihre Konfiguration über `/app/config` lädt.
+Für Live-Server-Tests mit [odas-config/config.json](odas-config/config.json) ist kein Edit an `app/app-base.js` nötig: Die App erkennt Localhost (127.0.0.1/localhost) automatisch und lädt dann die lokale Konfiguration.
 
 ### Docker
 
@@ -87,13 +87,19 @@ Die genaue Portbelegung ergibt sich aus [docker-compose.yml](docker-compose.yml)
 
 ### Tests
 
-Die Kernlogik der Datenverarbeitung kann ohne Browser geprüft werden:
+Die Portfolio-Regressionen sichern die Findings der Welle K (u. a. XSS-/URL-Vertrag, External-Host-Allowlist) reproduzierbar ab. Für diese App relevanter Einzel-Check:
 
 ```bash
-node tools/app-core.test.js
+node ../tools/odas-audit-regression/scripts/check-xss-url.mjs
 ```
 
-Die Tests decken CKAN-URL-Erzeugung, ODAS-Proxy-Pfadextraktion, deutsche Pegel-Zeitstempel, Join-Logik, Einheiten-Normalisierung und Trendberechnung ab.
+sowie die Gesamt-Regressionen:
+
+```bash
+bash ../tools/odas-audit-regression/run-all.sh
+```
+
+Die je App abgedeckten Checks sind im README der Regressionen dokumentiert (`tools/odas-audit-regression/README.md`).
 
 ## Wichtige Dateien
 
