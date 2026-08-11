@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.16.0 - 2026-08-11
+- FIX: XSS- und URL-Vertrag geschlossen (F-35): neuer Top-Level-Helfer `safeHttpUrl`; der PEGELONLINE-Button wird nur noch gerendert, wenn `pegelonline_url` ein gültiges http(s)-Schema hat (zusaetzlich zum bestehenden Attribut-Escaping)
+
 ## 1.15.0 - 2026-08-07
 - FIX: Bootstrap-Ziele der Methodikbox instanzeindeutig gemacht (F-32) – `data-bs-target`, `aria-controls` und die zugehoerige div-ID der ausklappbaren Methodikbox erhalten eine per Instanz vergebene Kennung, damit zwei Instanzen derselben App auf einer Seite nicht mehr kollidieren
 

@@ -691,6 +691,7 @@ function renderDashboard(container, state) {
   const changeRateText = selectedStation && typeof selectedStation.hourlyRateOfChange === "number"
     ? `${selectedStation.hourlyRateOfChange > 0 ? "+" : ""}${(selectedStation.hourlyRateOfChange * 100).toFixed(0)} cm in der letzten Std.`
     : "nicht verfügbar";
+  const pegelonlineUrl = safeHttpUrl(selectedStation ? selectedStation.pegelonline_url : "");
 
   container.innerHTML = `
     <section class="pegelwatch-shell">
@@ -777,7 +778,7 @@ function renderDashboard(container, state) {
         </div>
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 px-3 pb-3 border-top pt-2 mt-2">
           <div>
-            ${selectedStation.pegelonline_url ? `<a class="btn btn-outline-primary btn-sm w-100 w-sm-auto" href="${escapeAttribute(selectedStation.pegelonline_url)}" target="_blank" rel="noopener">PEGELONLINE öffnen</a>` : ""}
+            ${pegelonlineUrl ? `<a class="btn btn-outline-primary btn-sm w-100 w-sm-auto" href="${escapeAttribute(pegelonlineUrl)}" target="_blank" rel="noopener">PEGELONLINE öffnen</a>` : ""}
           </div>
           <span class="text-muted small">Letzte Messung: ${formatDateTime(selectedStation.currentTimestampMs)}</span>
         </div>
@@ -1454,6 +1455,11 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}
+
+function safeHttpUrl(value) {
+  const s = String(value || "").trim();
+  return /^https?:\/\//i.test(s) ? s : "";
 }
 
 function escapeAttribute(value) {
