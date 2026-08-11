@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.17.0 - 2026-08-11
+- FIX: Laufzeitressourcen beim Seitenwechsel freigeben (F-43): neuer Top-Level-Hook `onPageLeave(page)`, der den 5-Minuten-Aktualisierungs-Timer stoppt, das Chart zerstört und den Container-State aufraeumt (ueber `teardownPegelwatch`); das `disposed`-Flag macht späte Timer-/Fetch-Renders (nach der await-Grenze in `loadDataAndRender`) wirkungslos — beim Wechsel auf eine Unterseite laufen keine Hintergrund-Renders mehr
+
 ## 1.16.0 - 2026-08-11
 - FIX: XSS- und URL-Vertrag geschlossen (F-35): neuer Top-Level-Helfer `safeHttpUrl`; der PEGELONLINE-Button wird nur noch gerendert, wenn `pegelonline_url` ein gültiges http(s)-Schema hat (zusaetzlich zum bestehenden Attribut-Escaping)
 

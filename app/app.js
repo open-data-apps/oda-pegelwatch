@@ -8,6 +8,12 @@
 let pegelInstanzZaehler = 0;
 let pegelUid = "i1";
 
+// F-43: Registrierte Instanzen (Container -> State), damit der Top-Level-Hook
+// onPageLeave() alle gemounteten Instanzen aufraeumen kann. Die Base ruft den
+// Hook global ohne Container-Parameter auf; eine iterierbare Map ist daher das
+// zur App passende Muster (schulwegsicherheit-Portfoliomuster).
+const pegelwatchInstances = new Map();
+
 const PEGELWATCH_DEFAULTS = {
   title: "Pegelwatch",
   apiurl: "https://open-data-musterstadt.ckan.de/api/3/action/",
@@ -53,6 +59,21 @@ const GERMAN_MONTHS = {
 
 const dependencyCache = {};
 
+/*
+ * Template-Hook (oda-generic 1.4.0). Die Base ruft ihn vor dem Rendern der neuen
+ * Seite auf. Diese App haelt einen 5-Minuten-Aktualisierungs-Timer, eine
+ * Chart.js-Instanz und per-Instanz-Daten; der Hook räumt alle gemounteten
+ * Instanzen ueber teardownPegelwatch() ab und macht späte Fetch-/Timer-Renders
+ * durch das disposed-Flag wirkungslos.
+ */
+function onPageLeave(page) {
+  pegelwatchInstances.forEach((state, container) => {
+    state.disposed = true;
+    teardownPegelwatch(container);
+    pegelwatchInstances.delete(container);
+  });
+}
+
 function app(configdata = {}, enclosingHtmlDivElement) {
   pegelUid = "i" + ++pegelInstanzZaehler;
 
@@ -60,6 +81,10 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     return "";
   }
 
+  const previousState = enclosingHtmlDivElement._pegelWatchState;
+  if (previousState) {
+    previousState.disposed = true;
+  }
   teardownPegelwatch(enclosingHtmlDivElement);
 
   const state = {
@@ -75,15 +100,22 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     chart: null,
     refreshTimer: null,
     timeframe: 24,
+    disposed: false,
   };
 
   enclosingHtmlDivElement._pegelWatchState = state;
+  pegelwatchInstances.set(enclosingHtmlDivElement, state);
   renderLoading(enclosingHtmlDivElement, state.config);
 
   loadDependencies()
     .then(() => loadDataAndRender(enclosingHtmlDivElement, state, false))
     .then(() => {
       state.refreshTimer = setInterval(() => {
+        if (state.disposed) {
+          clearInterval(state.refreshTimer);
+          state.refreshTimer = null;
+          return;
+        }
         if (!document.body.contains(enclosingHtmlDivElement)) {
           teardownPegelwatch(enclosingHtmlDivElement);
           return;
@@ -271,6 +303,8 @@ async function loadDataAndRender(container, state, silent) {
       fetchCkanRecords(state.config, state.config.messwerteResourceId, null, "Messwerte", { sort: "zeitstempel desc" }, onProgress),
     ]);
 
+    if (state.disposed) return;
+
     state.stations = stationsResponse;
     state.measurements = measurementsResponse;
     state.joinedStations = mergeStationsWithMeasurements(state.stations, state.measurements);
@@ -285,6 +319,7 @@ async function loadDataAndRender(container, state, silent) {
 
     renderDashboard(container, state);
   } catch (error) {
+    if (state.disposed) return;
     if (silent) {
       renderInlineError(container, error);
       setRefreshIdle(container);
