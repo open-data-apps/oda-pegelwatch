@@ -1,5 +1,9 @@
 # Changelog - Pegelwatch
 
+
+## 1.19.0 - 2026-08-12
+- FIX: `app/index.html` auf den Template-Stand (F-47): Datei byte-gleich aus `oda-generic` übernommen — gültiges HTML, deutsche ARIA-Labels, Footer im Body; Titel und Fußzeile bleiben Platzhalter und werden zur Laufzeit aus der Instanz-Config überschrieben
+
 ## 1.18.0 - 2026-08-12
 - FIX: Alarm-Schwellen kapseln Storage-Zugriffe in try/catch — bei blockiertem Browserspeicher bricht das Rendern der Stationsliste nicht mehr ab, die App läuft ohne Persistenz weiter (F-50)
 
