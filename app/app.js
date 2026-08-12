@@ -1350,23 +1350,36 @@ function convertEpsg31467ToWgs84(rechtswert, hochwert) {
   };
 }
 
+/* Blockierter Browser-Speicher wirft beim Zugriff, obwohl das Objekt existiert
+ * (Safari "Alle Cookies blockieren", einzelne WebViews). Ein typeof-Guard reicht
+ * dafuer nicht. Faellt der Speicher aus, laeuft die App ohne Persistenz weiter
+ * (F-50). Vorbild: oda-app-katastrophenschutz-karte. */
 function getAlarmThreshold(stationId) {
-  if (!stationId || typeof localStorage === "undefined") {
+  if (!stationId) {
     return null;
   }
-  const stored = localStorage.getItem(getAlarmStorageKey(stationId));
+  let stored = null;
+  try {
+    stored = localStorage.getItem(getAlarmStorageKey(stationId));
+  } catch (error) {
+    return null;
+  }
   const value = parseNumber(stored);
   return value !== null && value > 0 ? value : null;
 }
 
 function setAlarmThreshold(stationId, value) {
-  if (!stationId || typeof localStorage === "undefined") {
+  if (!stationId) {
     return;
   }
-  if (value === null || value <= 0) {
-    localStorage.removeItem(getAlarmStorageKey(stationId));
-  } else {
-    localStorage.setItem(getAlarmStorageKey(stationId), String(value));
+  try {
+    if (value === null || value <= 0) {
+      localStorage.removeItem(getAlarmStorageKey(stationId));
+    } else {
+      localStorage.setItem(getAlarmStorageKey(stationId), String(value));
+    }
+  } catch (error) {
+    // Persistenz ist optional; die Schwelle gilt dann nur fuer diese Sitzung.
   }
 }
 

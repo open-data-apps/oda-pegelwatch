@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.18.0 - 2026-08-12
+- FIX: Alarm-Schwellen kapseln Storage-Zugriffe in try/catch — bei blockiertem Browserspeicher bricht das Rendern der Stationsliste nicht mehr ab, die App läuft ohne Persistenz weiter (F-50)
+
 ## 1.17.0 - 2026-08-11
 - FIX: Laufzeitressourcen beim Seitenwechsel freigeben (F-43): neuer Top-Level-Hook `onPageLeave(page)`, der den 5-Minuten-Aktualisierungs-Timer stoppt, das Chart zerstört und den Container-State aufraeumt (ueber `teardownPegelwatch`); das `disposed`-Flag macht späte Timer-/Fetch-Renders (nach der await-Grenze in `loadDataAndRender`) wirkungslos — beim Wechsel auf eine Unterseite laufen keine Hintergrund-Renders mehr
 
