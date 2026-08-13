@@ -110,6 +110,7 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   loadDependencies()
     .then(() => loadDataAndRender(enclosingHtmlDivElement, state, false))
     .then(() => {
+      if (state.disposed) return;
       state.refreshTimer = setInterval(() => {
         if (state.disposed) {
           clearInterval(state.refreshTimer);
@@ -192,9 +193,15 @@ function teardownPegelwatch(container) {
 
   if (state.refreshTimer) {
     clearInterval(state.refreshTimer);
+    state.refreshTimer = null;
+  }
+  if (state.map && typeof state.map.remove === "function") {
+    state.map.remove();
+    state.map = null;
   }
   if (state.chart && typeof state.chart.destroy === "function") {
     state.chart.destroy();
+    state.chart = null;
   }
 
   container._pegelWatchState = null;
@@ -1112,7 +1119,10 @@ function initMap(container, state) {
       state.selectedStationId = station.pegel_id;
       // setTimeout hebt renderDashboard aus dem Leaflet-Event-Stack,
       // damit state.map.remove() nicht innerhalb eines aktiven Leaflet-Events aufgerufen wird.
-      setTimeout(() => renderDashboard(container, state), 0);
+      setTimeout(() => {
+        if (state.disposed) return;
+        renderDashboard(container, state);
+      }, 0);
     });
 
     bounds.push([coords.lat, coords.lon]);
