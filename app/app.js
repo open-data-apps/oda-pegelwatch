@@ -118,13 +118,18 @@ function app(configdata = {}, enclosingHtmlDivElement) {
           return;
         }
         if (!document.body.contains(enclosingHtmlDivElement)) {
+          state.disposed = true;
           teardownPegelwatch(enclosingHtmlDivElement);
+          pegelwatchInstances.delete(enclosingHtmlDivElement);
           return;
         }
         loadDataAndRender(enclosingHtmlDivElement, state, true);
       }, PEGELWATCH_DEFAULTS.refreshMs);
     })
-    .catch((error) => renderFatalError(enclosingHtmlDivElement, state.config, error));
+    .catch((error) => {
+      if (state.disposed) return;
+      renderFatalError(enclosingHtmlDivElement, state.config, error);
+    });
 
   return null;
 }

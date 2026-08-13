@@ -2,7 +2,7 @@
 
 
 ## 1.20.0 - 2026-08-12
-- FIX: Leaflet-Karte und asynchrone Render-Fortsetzungen beim Seitenwechsel sauber freigeben (F-57): `teardownPegelwatch()` ruft `state.map.remove()` auf und nullt Map-, Chart- und Timer-Referenzen; die Timer-Erzeugung nach `loadDataAndRender(...).then(...)` sowie das per Marker-Klick geplante `setTimeout(renderDashboard)` sind per `state.disposed`-Guard vor Wiederauferstehung nach dem Teardown geschützt
+- FIX: Leaflet-Karte und asynchrone Render-Fortsetzungen beim Seitenwechsel sauber freigeben (F-57): `teardownPegelwatch()` ruft `state.map.remove()` auf und nullt Map-, Chart- und Timer-Referenzen; die Timer-Erzeugung nach `loadDataAndRender(...).then(...)` sowie das per Marker-Klick geplante `setTimeout(renderDashboard)` sind per `state.disposed`-Guard vor Wiederauferstehung nach dem Teardown geschützt; der äußere Promise-`.catch` prüft ebenfalls `state.disposed` vor `renderFatalError` und der defensive Detached-Interval-Zweig setzt `state.disposed`, ruft `teardownPegelwatch()` und entfernt die Instanz aus `pegelwatchInstances`, sodass späte Fortsetzungen nach `onPageLeave` keinen DOM-Fehler mehr rendern
 
 ## 1.19.0 - 2026-08-12
 - FIX: `app/index.html` auf den Template-Stand (F-47): Datei byte-gleich aus `oda-generic` übernommen — gültiges HTML, deutsche ARIA-Labels, Footer im Body; Titel und Fußzeile bleiben Platzhalter und werden zur Laufzeit aus der Instanz-Config überschrieben
