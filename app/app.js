@@ -16,7 +16,6 @@ const pegelwatchInstances = new Map();
 
 const PEGELWATCH_DEFAULTS = {
   title: "Pegelwatch",
-  apiurl: "https://open-data-musterstadt.ckan.de/api/3/action/",
   messstellenResourceId: "49306025-b8fa-49eb-b39b-dceb697ba557",
   messwerteResourceId: "a76c531e-fd9c-4fc4-a783-6d503446796d",
   refreshMs: 5 * 60 * 1000,
@@ -105,6 +104,14 @@ function app(configdata = {}, enclosingHtmlDivElement) {
 
   enclosingHtmlDivElement._pegelWatchState = state;
   pegelwatchInstances.set(enclosingHtmlDivElement, state);
+
+  const quelle = String(state.config.apiurl || "").trim();
+  if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
+    enclosingHtmlDivElement.innerHTML =
+      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    return null;
+  }
+
   renderLoading(enclosingHtmlDivElement, state.config);
 
   loadDependencies()
@@ -144,7 +151,7 @@ function normalizeAppConfig(config = {}) {
   return {
     ...config,
     titel: String(config.titel || PEGELWATCH_DEFAULTS.title),
-    apiurl: String(config.apiurl || PEGELWATCH_DEFAULTS.apiurl),
+    apiurl: String(config.apiurl || ""),
     messstellenResourceId: String(
       config.messstellenResourceId || PEGELWATCH_DEFAULTS.messstellenResourceId
     ),
@@ -387,7 +394,7 @@ async function fetchCkanRecords(config, resourceId, limit, label, extraParams = 
 }
 
 function buildCkanDatastoreUrl(config = {}, resourceId, limit = 100, extraParams = {}) {
-  const baseUrl = normalizeCkanActionBase(config.apiurl || PEGELWATCH_DEFAULTS.apiurl);
+  const baseUrl = normalizeCkanActionBase(config.apiurl);
   const url = new URL("datastore_search", baseUrl);
   url.searchParams.set("resource_id", resourceId);
   url.searchParams.set("limit", String(limit));
@@ -402,10 +409,7 @@ function buildCkanDatastoreUrl(config = {}, resourceId, limit = 100, extraParams
 }
 
 function normalizeCkanActionBase(apiurl) {
-  let baseUrl = String(apiurl || PEGELWATCH_DEFAULTS.apiurl).trim();
-  if (!baseUrl) {
-    baseUrl = PEGELWATCH_DEFAULTS.apiurl;
-  }
+  let baseUrl = String(apiurl || "").trim();
 
   baseUrl = baseUrl.replace(/\/+$/, "");
   if (!/\/api\/(?:3\/)?action$/i.test(baseUrl)) {
