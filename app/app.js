@@ -812,8 +812,8 @@ function renderDashboard(container, state) {
         <div class="pegelwatch-panel-heading d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
           <h2 class="h5 mb-0">Pegelverlauf</h2>
           <div class="d-flex align-items-center">
-            <label for="pegelwatch-timeframe-select" class="me-2 small fw-semibold text-muted mb-0">Zeitfenster:</label>
-            <select id="pegelwatch-timeframe-select" class="form-select form-select-sm" style="width: auto;">
+            <label for="pegelwatch-timeframe-select-${state.uid}" class="me-2 small fw-semibold text-muted mb-0">Zeitfenster:</label>
+            <select id="pegelwatch-timeframe-select-${state.uid}" class="form-select form-select-sm" style="width: auto;">
               <option value="24" ${state.timeframe === 24 ? "selected" : ""}>24 Std.</option>
               <option value="48" ${state.timeframe === 48 ? "selected" : ""}>48 Std.</option>
               <option value="72" ${state.timeframe === 72 ? "selected" : ""}>72 Std.</option>
@@ -973,9 +973,9 @@ function renderDetailPanel(station) {
           <div class="col-md-6">
             <h3 class="h6 fw-bold mb-3">Alarmschwellen-Konfiguration</h3>
             <div class="pegelwatch-threshold ${warning ? "pegelwatch-threshold-warning" : ""}">
-              <label class="form-label fw-semibold" for="pegelwatch-threshold-input">Lokale Alarmschwelle in Metern</label>
+              <label class="form-label fw-semibold" for="pegelwatch-threshold-input-${state.uid}">Lokale Alarmschwelle in Metern</label>
               <div class="input-group input-group-sm">
-                <input class="form-control" id="pegelwatch-threshold-input" type="number" min="0" step="0.01" value="${threshold === null ? "" : escapeAttribute(String(threshold))}" placeholder="z. B. 1.80">
+                <input class="form-control" id="pegelwatch-threshold-input-${state.uid}" type="number" min="0" step="0.01" value="${threshold === null ? "" : escapeAttribute(String(threshold))}" placeholder="z. B. 1.80">
                 <button class="btn btn-primary" type="button" id="pegelwatch-save-threshold">Speichern</button>
                 <button class="btn btn-outline-secondary" type="button" id="pegelwatch-clear-threshold">Zurücksetzen</button>
               </div>
@@ -1005,7 +1005,7 @@ function initDashboardEvents(container, state) {
     });
   }
 
-  const timeframeEl = container.querySelector("#pegelwatch-timeframe-select");
+  const timeframeEl = container.querySelector(`#pegelwatch-timeframe-select-${state.uid}`);
   if (timeframeEl) {
     timeframeEl.addEventListener("change", (e) => {
       state.timeframe = parseInt(e.target.value, 10);
@@ -1038,7 +1038,7 @@ function initDashboardEvents(container, state) {
   const saveButton = container.querySelector("#pegelwatch-save-threshold");
   if (saveButton) {
     saveButton.addEventListener("click", () => {
-      const input = container.querySelector("#pegelwatch-threshold-input");
+      const input = container.querySelector(`#pegelwatch-threshold-input-${state.uid}`);
       setAlarmThreshold(state.selectedStationId, parseNumber(input && input.value));
       state.joinedStations = mergeStationsWithMeasurements(state.stations, state.measurements);
       renderDashboard(container, state);
