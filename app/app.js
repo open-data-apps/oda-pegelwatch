@@ -6,7 +6,6 @@
  */
 
 let pegelInstanzZaehler = 0;
-let pegelUid = "i1";
 
 // F-43: Registrierte Instanzen (Container -> State), damit der Top-Level-Hook
 // onPageLeave() alle gemounteten Instanzen aufraeumen kann. Die Base ruft den
@@ -74,7 +73,7 @@ function onPageLeave(page) {
 }
 
 function app(configdata = {}, enclosingHtmlDivElement) {
-  pegelUid = "i" + ++pegelInstanzZaehler;
+  const pegelUid = "i" + ++pegelInstanzZaehler;
 
   if (!enclosingHtmlDivElement) {
     return "";
