@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -43,7 +43,7 @@
   "instanz-config": {
     "seitentitel": {
       "label": "Seitentitel",
-      "category": "general",
+      "category": "allgemein",
       "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt.",
       "default": "Pegelwatch",
       "format": {
@@ -54,7 +54,7 @@
     },
     "titel": {
       "label": "Titel",
-      "category": "general",
+      "category": "allgemein",
       "hilfe": "Der Titel wird in der Titelzeile der App angezeigt.",
       "default": "Pegelwatch",
       "format": {
@@ -65,7 +65,7 @@
     },
     "icon": {
       "label": "App-Icon",
-      "category": "general",
+      "category": "allgemein",
       "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt.",
       "default": "logo_ondics.png",
       "format": {
@@ -77,7 +77,7 @@
     },
     "kontakt": {
       "label": "Kontakt",
-      "category": "contact-legal",
+      "category": "kontakt-rechtliches",
       "hilfe": "Der Text wird im Menuepunkt Kontakt angezeigt.",
       "format": {
         "typ": "markdown"
@@ -91,7 +91,7 @@
     },
     "beschreibung": {
       "label": "Beschreibung",
-      "category": "content",
+      "category": "beschreibung",
       "hilfe": "Der Text wird im Menuepunkt Ueber diese App angezeigt.",
       "format": {
         "typ": "markdown"
@@ -117,7 +117,7 @@
     },
     "impressum": {
       "label": "Impressum",
-      "category": "contact-legal",
+      "category": "kontakt-rechtliches",
       "hilfe": "Der Text wird im Menuepunkt Impressum angezeigt.",
       "format": {
         "typ": "markdown"
@@ -137,7 +137,7 @@
     },
     "datenschutz": {
       "label": "Datenschutz",
-      "category": "contact-legal",
+      "category": "kontakt-rechtliches",
       "hilfe": "Der Text wird im Menuepunkt Datenschutz angezeigt.",
       "format": {
         "typ": "markdown"
@@ -153,7 +153,7 @@
     },
     "urlDaten": {
       "label": "URL zum Datensatz im ODP",
-      "category": "datasource",
+      "category": "datenherkunft",
       "hilfe": "Link zur Datensatzseite im Open-Data-Portal.",
       "format": {
         "typ": "url"
@@ -164,7 +164,7 @@
     },
     "fusszeile": {
       "label": "Fusszeile",
-      "category": "contact-legal",
+      "category": "kontakt-rechtliches",
       "hilfe": "Wird unten auf der App-Seite angezeigt.",
       "format": {
         "typ": "string",
@@ -175,7 +175,7 @@
     },
     "apiurl": {
       "label": "CKAN Action API Basis-URL",
-      "category": "datasource",
+      "category": "datenherkunft",
       "hilfe": "Basis-URL der CKAN Action API, zum Beispiel https://portal.example/api/3/action/.",
       "format": {
         "typ": "url"
@@ -186,7 +186,7 @@
     },
     "messstellenResourceId": {
       "label": "Ressourcen-ID Messstellen",
-      "category": "datasource",
+      "category": "datenherkunft",
       "hilfe": "CKAN DataStore Resource ID fuer die Messstellen-Stammdaten.",
       "format": {
         "typ": "string",
@@ -197,7 +197,7 @@
     },
     "messwerteResourceId": {
       "label": "Ressourcen-ID Messwerte",
-      "category": "datasource",
+      "category": "datenherkunft",
       "hilfe": "CKAN DataStore Resource ID fuer die Pegel-Messwerte.",
       "format": {
         "typ": "string",
@@ -208,7 +208,7 @@
     },
     "proxyAktiv": {
       "label": "ODAS-Proxy aktiv?",
-      "category": "datasource",
+      "category": "datenherkunft",
       "hilfe": "Legt fest, ob Datenabrufe direkt oder ueber den ODAS-CORS-Proxy /app/odp-data erfolgen.",
       "format": {
         "typ": "dropdown",
@@ -222,7 +222,7 @@
     },
     "weiterfuehrendeLinks": {
       "label": "Weiterfuehrende Links",
-      "category": "content",
+      "category": "beschreibung",
       "hilfe": "Verwandte Datensaetze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
       "format": {
         "typ": "markdown"
@@ -232,7 +232,7 @@
     },
     "datenquelleHinweis": {
       "label": "Methodik / Datenquelle-Hinweis",
-      "category": "content",
+      "category": "beschreibung",
       "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
       "format": {
         "typ": "markdown"
@@ -242,7 +242,7 @@
     },
     "datenStand": {
       "label": "Datenstand",
-      "category": "content",
+      "category": "beschreibung",
       "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
       "format": {
         "typ": "string"
@@ -252,7 +252,7 @@
     },
     "sprache": {
       "label": "Sprache der App",
-      "category": "general",
+      "category": "allgemein",
       "hilfe": "Angabe der App-Sprache.",
       "format": {
         "typ": "dropdown",
@@ -265,7 +265,7 @@
     },
     "brandingCSS": {
       "label": "Zusätzliches Branding-CSS",
-      "category": "advanced",
+      "category": "sonstiges",
       "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
       "default": "",
       "format": {
@@ -276,7 +276,7 @@
     },
     "brandingCSSFile": {
       "label": "Branding-CSS-Datei",
-      "category": "advanced",
+      "category": "sonstiges",
       "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
       "default": "",
       "format": {
