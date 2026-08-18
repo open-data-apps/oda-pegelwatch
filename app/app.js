@@ -855,7 +855,7 @@ function renderDashboard(container, state) {
       <!-- Detail- und Diagrammbereich (Stammdaten & Alarmschwelle) -->
       <div class="row g-4 mb-4">
         <div class="col-12">
-          ${renderDetailPanel(selectedStation)}
+          ${renderDetailPanel(selectedStation, state.uid)}
         </div>
       </div>
       ` : `
@@ -937,7 +937,7 @@ function renderStationRow(station, selectedStationId) {
   `;
 }
 
-function renderDetailPanel(station) {
+function renderDetailPanel(station, uid) {
   if (!station) {
     return `
       <section class="pegelwatch-panel">
@@ -991,9 +991,9 @@ function renderDetailPanel(station) {
           <div class="col-md-6">
             <h3 class="h6 fw-bold mb-3">Alarmschwellen-Konfiguration</h3>
             <div class="pegelwatch-threshold ${warning ? "pegelwatch-threshold-warning" : ""}">
-              <label class="form-label fw-semibold" for="pegelwatch-threshold-input-${state.uid}">Lokale Alarmschwelle in Metern</label>
+              <label class="form-label fw-semibold" for="pegelwatch-threshold-input-${uid}">Lokale Alarmschwelle in Metern</label>
               <div class="input-group input-group-sm">
-                <input class="form-control" id="pegelwatch-threshold-input-${state.uid}" type="number" min="0" step="0.01" value="${threshold === null ? "" : escapeAttribute(String(threshold))}" placeholder="z. B. 1.80">
+                <input class="form-control" id="pegelwatch-threshold-input-${uid}" type="number" min="0" step="0.01" value="${threshold === null ? "" : escapeAttribute(String(threshold))}" placeholder="z. B. 1.80">
                 <button class="btn btn-primary" type="button" id="pegelwatch-save-threshold">Speichern</button>
                 <button class="btn btn-outline-secondary" type="button" id="pegelwatch-clear-threshold">Zurücksetzen</button>
               </div>

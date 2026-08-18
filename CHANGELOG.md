@@ -1,6 +1,9 @@
 # Changelog - Pegelwatch
 
 
+## 1.23.0 - 2026-08-18
+- FIX: `renderDetailPanel()` warf einen `ReferenceError: state is not defined`, sobald eine Messstelle ausgewählt war (praktisch immer, sobald Daten geladen sind) — der F-60-Fix (1.20.0) hatte `${state.uid}` in den Alarmschwellen-Feldern ergänzt, ohne `uid` als Parameter an `renderDetailPanel(station)` durchzureichen. Funktion nimmt jetzt `renderDetailPanel(station, uid)` entgegen, Aufrufstelle übergibt `state.uid`. Gefunden durch die neue Zwei-Instanz-Laufzeitprobe (`tools/odas-zweiinstanz-probe/`, Welle Z)
+
 ## 1.22.0 - 2026-08-17
 - `fetchOdasJson()` wirft jetzt bei nicht-JSON-Antworten (CSV, HTML, leerer Body) eine sprechende Konfigurationsfehlermeldung statt der rohen `JSON.parse`-Parserfehlermeldung (F-66)
 
