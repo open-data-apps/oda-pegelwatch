@@ -1,5 +1,7 @@
 # Changelog - Pegelwatch
 
+## 1.25.0 - 2026-08-20
+- Markdown-Metadaten: Paketbeschreibungen auf echtes Markdown umgestellt, exakte Identität Top-Level/Instanz hergestellt, lokale HTML-Fixture semantisch gespiegelt.
 
 ## 1.24.0 - 2026-08-20
 - FIX: Generierte IDs (u. a. `pegel-chart`, `pegelwatch-refresh`, `pegelwatch-alerts`, `pegelwatch-prev`/`-next`, `pegelwatch-station-select`, `pegelwatch-progress-bar`, `pegelwatch-detail`, `pegelwatch-save-threshold`, `pegelwatch-clear-threshold`) tragen jetzt durchgängig die Instanzkennung `state.uid`, damit zwei Instanzen dieser App auf derselben Seite nicht kollidieren; alle zugehörigen `querySelector`-Lookups wurden entsprechend nachgezogen (F-71)
