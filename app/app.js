@@ -24,9 +24,6 @@ const PEGELWATCH_DEPENDENCIES = {
   chartJs: "vendor/chartjs/chart.umd.min.js",
 };
 
-const EPSG_31467_DEFINITION =
-  "+proj=tmerc +lat_0=0 +lon_0=9 +k=1 +x_0=3500000 +y_0=0 +ellps=bessel +towgs84=598.1,73.7,418.2,0.202,0.045,-2.455,6.7 +units=m +no_defs";
-
 const GERMAN_MONTHS = {
   januar: 0,
   jan: 0,
@@ -294,10 +291,10 @@ function loadCssAsync(url) {
 }
 
 async function loadDataAndRender(container, state, silent) {
-  setRefreshBusy(container, silent);
+  setRefreshBusy(container, silent, state.uid);
 
   const loadingTextEl = container.querySelector("#pegelwatch-loading-text");
-  const refreshButton = container.querySelector("#pegelwatch-refresh");
+  const refreshButton = container.querySelector(`#pegelwatch-refresh-${state.uid}`);
 
   const onProgress = (loaded, total) => {
     const pct = total ? Math.min(100, Math.round((loaded / total) * 100)) : 0;
@@ -308,7 +305,7 @@ async function loadDataAndRender(container, state, silent) {
     if (refreshButton) {
       refreshButton.textContent = `Lade (${pct}%)...`;
     }
-    const progressBar = container.querySelector("#pegelwatch-progress-bar .progress-bar");
+    const progressBar = container.querySelector(`#pegelwatch-progress-bar-${state.uid} .progress-bar`);
     if (progressBar) {
       progressBar.style.width = `${pct}%`;
       progressBar.setAttribute("aria-valuenow", String(pct));
@@ -339,8 +336,8 @@ async function loadDataAndRender(container, state, silent) {
   } catch (error) {
     if (state.disposed) return;
     if (silent) {
-      renderInlineError(container, error);
-      setRefreshIdle(container);
+      renderInlineError(container, error, state.uid);
+      setRefreshIdle(container, state.uid);
     } else {
       renderFatalError(container, state.config, error);
     }
@@ -763,7 +760,7 @@ function renderDashboard(container, state) {
 
   container.innerHTML = `
     <section class="pegelwatch-shell">
-      <div id="pegelwatch-alerts"></div>
+      <div id="pegelwatch-alerts-${state.uid}"></div>
       
       <header class="pegelwatch-header mb-3">
         <div>
@@ -774,7 +771,7 @@ function renderDashboard(container, state) {
           <span class="badge rounded-pill ${isOdasProxyEnabled(state.config) ? "text-bg-warning" : "text-bg-success"}">
             ${isOdasProxyEnabled(state.config) ? "ODAS-Proxy aktiv" : "Direktmodus"}
           </span>
-          <button class="btn btn-primary btn-sm" type="button" id="pegelwatch-refresh">
+          <button class="btn btn-primary btn-sm" type="button" id="pegelwatch-refresh-${state.uid}">
             Aktualisieren
           </button>
         </div>
@@ -786,13 +783,13 @@ function renderDashboard(container, state) {
       </div>
 
       <div class="pegel-nav-bar mb-3">
-        <button id="pegelwatch-prev" class="btn btn-outline-primary" type="button" aria-label="Vorherige Messstelle">
+        <button id="pegelwatch-prev-${state.uid}" class="btn btn-outline-primary" type="button" aria-label="Vorherige Messstelle">
           &larr;<span class="d-none d-sm-inline"> Vorherige</span>
         </button>
-        <select id="pegelwatch-station-select" class="form-select mx-2" aria-label="Messstelle auswählen">
+        <select id="pegelwatch-station-select-${state.uid}" class="form-select mx-2" aria-label="Messstelle auswählen">
           ${dropdownOptions}
         </select>
-        <button id="pegelwatch-next" class="btn btn-outline-primary" type="button" aria-label="Nächste Messstelle">
+        <button id="pegelwatch-next-${state.uid}" class="btn btn-outline-primary" type="button" aria-label="Nächste Messstelle">
           <span class="d-none d-sm-inline">Nächste </span>&rarr;
         </button>
       </div>
@@ -842,7 +839,7 @@ function renderDashboard(container, state) {
           </div>
         </div>
         <div class="pegelwatch-chart-wrap p-2 mb-3">
-          <canvas id="pegel-chart" aria-label="Pegelverlauf" role="img"></canvas>
+          <canvas id="pegel-chart-${state.uid}" aria-label="Pegelverlauf" role="img"></canvas>
         </div>
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-2 px-3 pb-3 border-top pt-2 mt-2">
           <div>
@@ -873,70 +870,6 @@ function renderDashboard(container, state) {
   }
 }
 
-function renderMetricCard(label, value, subline, tone = "primary") {
-  const isWarningTone = tone === "danger" && Number(value) > 0;
-  const pulseDot = isWarningTone ? '<span class="pegel-metric-pulse-dot" aria-hidden="true"></span>' : '';
-  
-  return `
-    <div class="col-md-4">
-      <article class="pegelwatch-metric pegelwatch-metric-${tone}">
-        <div class="d-flex justify-content-between align-items-start">
-          <span>${escapeHtml(label)}</span>
-          ${pulseDot}
-        </div>
-        <strong>${escapeHtml(String(value))}</strong>
-        <small>${escapeHtml(subline)}</small>
-      </article>
-    </div>
-  `;
-}
-
-function renderSortableHeader(key, label, state) {
-  const active = state.sortKey === key;
-  const direction = active && state.sortDirection === "asc" ? "aufsteigend" : "absteigend";
-  const indicator = active ? (state.sortDirection === "asc" ? " A-Z" : " Z-A") : "";
-
-  return `
-    <th scope="col">
-      <button class="pegelwatch-sort-button" type="button" data-sort-key="${key}" aria-label="${escapeHtml(label)} ${direction} sortieren">
-        ${escapeHtml(label)}<span aria-hidden="true">${indicator}</span>
-      </button>
-    </th>
-  `;
-}
-
-function renderStationRow(station, selectedStationId) {
-  const selected = station.pegel_id === selectedStationId;
-  const warning = isAlarmExceeded(station);
-  const valueText = formatMeters(station.currentValue);
-
-  return `
-    <tr class="${selected ? "table-primary" : ""}">
-      <td data-label="Messstelle">
-        <div class="pegelwatch-cell-stack">
-          <button class="btn btn-link p-0 text-start fw-semibold pegelwatch-station-link" type="button" data-station-id="${escapeAttribute(station.pegel_id)}">
-            ${escapeHtml(station.name || station.pegel_id)}
-          </button>
-          <div class="text-muted small">Nr. ${escapeHtml(station.nummer || "nicht angegeben")}</div>
-        </div>
-      </td>
-      <td data-label="Gewässer / Standort">
-        <div class="pegelwatch-cell-stack">
-          <span>${escapeHtml(station.gewaesser || "nicht angegeben")}</span>
-          <div class="text-muted small">${escapeHtml(station.standort || "nicht angegeben")}</div>
-        </div>
-      </td>
-      <td data-label="Aktueller Pegel"><span class="pegelwatch-value">${valueText}</span></td>
-      <td data-label="Trend">${renderTrend(station.trend)}</td>
-      <td data-label="Status">
-        <span class="badge ${warning ? "text-bg-danger" : "text-bg-primary"}">
-          ${warning ? "Warnung" : station.currentValue === null ? "Kein Wert" : "Normal"}
-        </span>
-      </td>
-    </tr>
-  `;
-}
-
 function renderDetailPanel(station, uid) {
   if (!station) {
     return `
@@ -956,7 +889,7 @@ function renderDetailPanel(station, uid) {
     : "nicht verfügbar";
 
   return `
-    <section class="pegelwatch-panel" id="pegelwatch-detail">
+    <section class="pegelwatch-panel" id="pegelwatch-detail-${uid}">
       <div class="pegelwatch-panel-heading border-bottom pb-2 mb-3">
         <div>
           <h2 class="h5 mb-0">${escapeHtml(station.name || station.pegel_id)}</h2>
@@ -994,8 +927,8 @@ function renderDetailPanel(station, uid) {
               <label class="form-label fw-semibold" for="pegelwatch-threshold-input-${uid}">Lokale Alarmschwelle in Metern</label>
               <div class="input-group input-group-sm">
                 <input class="form-control" id="pegelwatch-threshold-input-${uid}" type="number" min="0" step="0.01" value="${threshold === null ? "" : escapeAttribute(String(threshold))}" placeholder="z. B. 1.80">
-                <button class="btn btn-primary" type="button" id="pegelwatch-save-threshold">Speichern</button>
-                <button class="btn btn-outline-secondary" type="button" id="pegelwatch-clear-threshold">Zurücksetzen</button>
+                <button class="btn btn-primary" type="button" id="pegelwatch-save-threshold-${uid}">Speichern</button>
+                <button class="btn btn-outline-secondary" type="button" id="pegelwatch-clear-threshold-${uid}">Zurücksetzen</button>
               </div>
               <p class="small mb-0 mt-2 text-muted">
                 Die Schwelle wird nur in diesem Browser gespeichert.
@@ -1009,13 +942,13 @@ function renderDetailPanel(station, uid) {
 }
 
 function initDashboardEvents(container, state) {
-  const refreshButton = container.querySelector("#pegelwatch-refresh");
+  const refreshButton = container.querySelector(`#pegelwatch-refresh-${state.uid}`);
   if (refreshButton) {
     refreshButton.addEventListener("click", () => loadDataAndRender(container, state, true));
   }
 
   // Diashow Navigation Events
-  const selectEl = container.querySelector("#pegelwatch-station-select");
+  const selectEl = container.querySelector(`#pegelwatch-station-select-${state.uid}`);
   if (selectEl) {
     selectEl.addEventListener("change", (e) => {
       state.selectedStationId = e.target.value;
@@ -1033,7 +966,7 @@ function initDashboardEvents(container, state) {
 
   const stationsList = sortStations(state.joinedStations, state.sortKey, state.sortDirection);
   
-  const prevBtn = container.querySelector("#pegelwatch-prev");
+  const prevBtn = container.querySelector(`#pegelwatch-prev-${state.uid}`);
   if (prevBtn && stationsList.length > 1) {
     prevBtn.addEventListener("click", () => {
       const currentIndex = stationsList.findIndex(s => s.pegel_id === state.selectedStationId);
@@ -1043,7 +976,7 @@ function initDashboardEvents(container, state) {
     });
   }
 
-  const nextBtn = container.querySelector("#pegelwatch-next");
+  const nextBtn = container.querySelector(`#pegelwatch-next-${state.uid}`);
   if (nextBtn && stationsList.length > 1) {
     nextBtn.addEventListener("click", () => {
       const currentIndex = stationsList.findIndex(s => s.pegel_id === state.selectedStationId);
@@ -1053,7 +986,7 @@ function initDashboardEvents(container, state) {
     });
   }
 
-  const saveButton = container.querySelector("#pegelwatch-save-threshold");
+  const saveButton = container.querySelector(`#pegelwatch-save-threshold-${state.uid}`);
   if (saveButton) {
     saveButton.addEventListener("click", () => {
       const input = container.querySelector(`#pegelwatch-threshold-input-${state.uid}`);
@@ -1063,112 +996,13 @@ function initDashboardEvents(container, state) {
     });
   }
 
-  const clearButton = container.querySelector("#pegelwatch-clear-threshold");
+  const clearButton = container.querySelector(`#pegelwatch-clear-threshold-${state.uid}`);
   if (clearButton) {
     clearButton.addEventListener("click", () => {
       setAlarmThreshold(state.selectedStationId, null);
       renderDashboard(container, state);
     });
   }
-}
-
-function initMap(container, state) {
-  const mapElement = container.querySelector("#pegel-map");
-  if (!mapElement) return;
-
-  // Fallback-Mindesthöhe: Wenn die externe CSS noch nicht geladen ist,
-  // hätte die Karte 0px Höhe und wäre unsichtbar.
-  if (!mapElement.offsetHeight) {
-    mapElement.style.height = "430px";
-  }
-
-  if (typeof L === "undefined") {
-    mapElement.innerHTML = `<div class="alert alert-warning m-3">Leaflet konnte nicht geladen werden.</div>`;
-    return;
-  }
-
-  state.map = L.map(mapElement, {
-    scrollWheelZoom: false,
-  }).setView([48.742, 9.31], 12);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende',
-    subdomains: "abc",
-    maxZoom: 19
-  }).addTo(state.map);
-
-  const bounds = [];
-
-  state.joinedStations.forEach((station) => {
-    const coords = convertEpsg31467ToWgs84(station.rechtswert, station.hochwert);
-    if (!coords) return;
-
-    // valueText: "kein Wert" → kompakter "k. A." auf der Karte
-    const warning = isAlarmExceeded(station);
-    const selected = station.pegel_id === state.selectedStationId;
-    const trendArrowSymbol = { up: "↑", down: "↓", stable: "→" }[station.trend] || "";
-    const trendClass = { up: "pegel-marker-trend-up", down: "pegel-marker-trend-down", stable: "pegel-marker-trend-stable" }[station.trend] || "";
-    const markerValueText = station.currentValue !== null && typeof station.currentValue === "number"
-      ? formatMeters(station.currentValue)
-      : "k. A.";
-
-    const markerHtml = `
-      <div class="pegel-map-marker ${warning ? 'warning' : ''} ${selected ? 'selected' : ''}">
-        ${warning ? '<div class="pegel-marker-pulse"></div>' : ''}
-        <div class="pegel-marker-badge">
-          <span>${escapeHtml(markerValueText)}</span>
-          <span class="${trendClass}">${escapeHtml(trendArrowSymbol)}</span>
-        </div>
-        <div class="pegel-marker-name">${escapeHtml(station.name || station.pegel_id)}</div>
-      </div>
-    `;
-
-    const markerIcon = L.divIcon({
-      html: markerHtml,
-      className: "pegel-custom-marker-container",
-      // iconSize null: Leaflet soll keine feste Größe erzwingen – der Marker ist width:auto in CSS
-      iconSize: null,
-      iconAnchor: [0, 0],
-    });
-
-    const marker = L.marker([coords.lat, coords.lon], {
-      icon: markerIcon,
-    }).addTo(state.map);
-
-    marker.bindPopup(`
-      <strong>${escapeHtml(station.name || station.pegel_id)}</strong><br>
-      Pegel: ${formatMeters(station.currentValue)}<br>
-      Status: ${warning ? "Warnung" : "Normal"}
-    `);
-
-    marker.on("click", () => {
-      state.selectedStationId = station.pegel_id;
-      // setTimeout hebt renderDashboard aus dem Leaflet-Event-Stack,
-      // damit state.map.remove() nicht innerhalb eines aktiven Leaflet-Events aufgerufen wird.
-      setTimeout(() => {
-        if (state.disposed) return;
-        renderDashboard(container, state);
-      }, 0);
-    });
-
-    bounds.push([coords.lat, coords.lon]);
-  });
-
-  if (bounds.length >= 1) {
-    state.map.fitBounds(bounds, { padding: [24, 24] });
-  }
-
-  // invalidateSize mehrfach aufrufen für robuste Initialisierung im ODAS-System
-  setTimeout(() => {
-    if (state.map) {
-      state.map.invalidateSize();
-    }
-  }, 200);
-  setTimeout(() => {
-    if (state.map) {
-      state.map.invalidateSize();
-    }
-  }, 600);
 }
 
 function formatChartLabel(timestampMs, timeframe) {
@@ -1195,7 +1029,7 @@ function formatChartLabel(timestampMs, timeframe) {
 }
 
 function renderChart(container, state, station) {
-  const canvas = container.querySelector("#pegel-chart");
+  const canvas = container.querySelector(`#pegel-chart-${state.uid}`);
   if (!canvas || !station || typeof Chart === "undefined") {
     return;
   }
@@ -1347,43 +1181,11 @@ function sortStations(stations, key, direction) {
   });
 }
 
-function compareNullableNumbers(a, b) {
-  if (a === null && b === null) return 0;
-  if (a === null) return 1;
-  if (b === null) return -1;
-  return a - b;
-}
-
 function compareStationValues(a, b, direction) {
   if (a === null && b === null) return 0;
   if (a === null) return 1;
   if (b === null) return -1;
   return direction === "desc" ? b - a : a - b;
-}
-
-function convertEpsg31467ToWgs84(rechtswert, hochwert) {
-  const x = parseNumber(rechtswert);
-  const y = parseNumber(hochwert);
-  if (x === null || y === null) {
-    return null;
-  }
-
-  if (typeof proj4 !== "undefined") {
-    try {
-      if (!proj4.defs("EPSG:31467")) {
-        proj4.defs("EPSG:31467", EPSG_31467_DEFINITION);
-      }
-      const [lon, lat] = proj4("EPSG:31467", "EPSG:4326", [x, y]);
-      return { lat, lon };
-    } catch (error) {
-      console.warn("Koordinatentransformation fehlgeschlagen, nutze Fallback.", error);
-    }
-  }
-
-  return {
-    lon: 9 + (x - 3500000) / 74000,
-    lat: 48.74 + (y - 5400000) / 111000,
-  };
 }
 
 /* Blockierter Browser-Speicher wirft beim Zugriff, obwohl das Objekt existiert
@@ -1439,8 +1241,8 @@ function renderTrend(trend) {
   return `<span class="${className}">${label}</span>`;
 }
 
-function renderInlineError(container, error) {
-  const alerts = container.querySelector("#pegelwatch-alerts");
+function renderInlineError(container, error, uid) {
+  const alerts = container.querySelector(`#pegelwatch-alerts-${uid}`);
   if (!alerts) return;
 
   alerts.innerHTML = `
@@ -1468,18 +1270,18 @@ function renderFatalError(container, config, error) {
   `;
 }
 
-function setRefreshBusy(container, silent) {
-  const button = container.querySelector("#pegelwatch-refresh");
+function setRefreshBusy(container, silent, uid) {
+  const button = container.querySelector(`#pegelwatch-refresh-${uid}`);
   if (button) {
     button.disabled = true;
     button.textContent = "Aktualisiere...";
   }
 
   // Erstelle Fortschrittsanzeige (Ladeanimation)
-  let progress = container.querySelector("#pegelwatch-progress-bar");
+  let progress = container.querySelector(`#pegelwatch-progress-bar-${uid}`);
   if (!progress) {
     progress = document.createElement("div");
-    progress.id = "pegelwatch-progress-bar";
+    progress.id = `pegelwatch-progress-bar-${uid}`;
     progress.className = "progress position-fixed top-0 start-0 w-100 rounded-0";
     progress.style.height = "4px";
     progress.style.zIndex = "9999";
@@ -1490,8 +1292,8 @@ function setRefreshBusy(container, silent) {
   }
 }
 
-function setRefreshIdle(container) {
-  const button = container.querySelector("#pegelwatch-refresh");
+function setRefreshIdle(container, uid) {
+  const button = container.querySelector(`#pegelwatch-refresh-${uid}`);
   if (!button) return;
   button.disabled = false;
   button.textContent = "Aktualisieren";
@@ -1555,7 +1357,6 @@ if (typeof module !== "undefined" && module.exports) {
     buildCkanDatastoreUrl,
     calculateRateOfChange,
     calculateTrend,
-    convertEpsg31467ToWgs84,
     extractPathFromUrl,
     fetchOdasResource,
     fetchOdasJson,

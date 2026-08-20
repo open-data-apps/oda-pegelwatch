@@ -159,11 +159,9 @@ ausgeliefert.
 
 ### Beim Aufruf kontaktierte Drittanbieter
 
-Beim Aufruf dieser App werden folgende externe Server kontaktiert:
+Alle für die Darstellung benötigten Programmbibliotheken (Bootstrap, Chart.js) werden lokal aus `app/vendor/` ausgeliefert; dafür werden beim Aufruf keine externen Server kontaktiert. Die App enthält seit Entfernung der Kartenansicht (v1.2.0) keine Kartenkomponente mehr, entsprechend werden auch keine Kartenkachel-Server mehr angesprochen.
 
-- `tile.openstreetmap.org` — Kartenkacheln (OpenStreetMap)
-
-Diese Anbieter bleiben auch im Standalone-Betrieb extern; ein vollständig autarker Betrieb ohne Internetzugang ist derzeit nicht möglich. Alle Programmbibliotheken werden lokal aus `app/vendor/` ausgeliefert und nicht mehr extern geladen.
+Kontaktiert wird lediglich die in der Instanz-Konfiguration hinterlegte Datenquelle (`apiurl`), sobald die App Messstellen- und Messwertdaten lädt.
 
 ### Auslieferung an den ODAS
 

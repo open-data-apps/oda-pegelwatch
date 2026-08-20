@@ -1,6 +1,10 @@
 # Changelog - Pegelwatch
 
 
+## 1.24.0 - 2026-08-20
+- FIX: Generierte IDs (u. a. `pegel-chart`, `pegelwatch-refresh`, `pegelwatch-alerts`, `pegelwatch-prev`/`-next`, `pegelwatch-station-select`, `pegelwatch-progress-bar`, `pegelwatch-detail`, `pegelwatch-save-threshold`, `pegelwatch-clear-threshold`) tragen jetzt durchgängig die Instanzkennung `state.uid`, damit zwei Instanzen dieser App auf derselben Seite nicht kollidieren; alle zugehörigen `querySelector`-Lookups wurden entsprechend nachgezogen (F-71)
+- FIX: Toten Karten-Code entfernt (`initMap()`, `convertEpsg31467ToWgs84()`, die zugehörige `EPSG_31467_DEFINITION`-Projektion sowie die seit der Diashow-Umstellung (v1.2.0) ungenutzten `renderMetricCard()`, `renderSortableHeader()`, `renderStationRow()`, `compareNullableNumbers()` — alle verifiziert unreferenziert); Datenschutztext (`odas-config/config.json`, `app-package.json`) und README behaupteten weiterhin einen Laufzeitkontakt zu `tile.openstreetmap.org`, obwohl die Karte seit v1.2.0 nicht mehr existiert und kein Leaflet mehr ausgeliefert wird — Texte korrigiert; die veraltete, noch "Karte"/"Tabelle" erwähnende `beschreibung` in `odas-config/config.json` wurde außerdem mit der bereits aktualisierten Fassung in `app-package.json` synchronisiert (F-84)
+
 ## 1.23.0 - 2026-08-18
 - FIX: `renderDetailPanel()` warf einen `ReferenceError: state is not defined`, sobald eine Messstelle ausgewählt war (praktisch immer, sobald Daten geladen sind) — der F-60-Fix (1.20.0) hatte `${state.uid}` in den Alarmschwellen-Feldern ergänzt, ohne `uid` als Parameter an `renderDetailPanel(station)` durchzureichen. Funktion nimmt jetzt `renderDetailPanel(station, uid)` entgegen, Aufrufstelle übergibt `state.uid`. Gefunden durch die neue Zwei-Instanz-Laufzeitprobe (`tools/odas-zweiinstanz-probe/`, Welle Z)
 
