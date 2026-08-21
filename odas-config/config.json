@@ -39,7 +39,13 @@
   ],
   "urlDaten": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
   "fusszeile": "(C) Copyright 2026 | App: Pegelwatch | Daten: Open Data Portal",
-  "apiurl": "https://open-data-musterstadt.ckan.de/api/3/action/",
+  "apiurls": [
+    {
+      "name": "pegelstaende",
+      "label": "CKAN Action API Basis-URL",
+      "url": "https://open-data-musterstadt.ckan.de/api/3/action/"
+    }
+  ],
   "messstellenResourceId": "49306025-b8fa-49eb-b39b-dceb697ba557",
   "messwerteResourceId": "a76c531e-fd9c-4fc4-a783-6d503446796d",
   "proxyAktiv": "nein",

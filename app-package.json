@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "version": "1.25.0",
+  "version": "1.26.0",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
   "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
@@ -232,16 +232,24 @@
       "default": "(C) Copyright {{jahr}} | App: Pegelwatch | Daten: Open Data Portal",
       "erforderlich": "ja"
     },
-    "apiurl": {
-      "label": "CKAN Action API Basis-URL",
+    "apiurls": {
+      "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Basis-URL der CKAN Action API, zum Beispiel https://portal.example/api/3/action/.",
+      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+      "typ": "array",
       "format": {
-        "typ": "url"
+        "typ": "url",
+        "laenge": 500
       },
-      "default": "https://open-data-musterstadt.ckan.de/api/3/action/",
-      "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/",
-      "erforderlich": "ja"
+      "urls": [
+        {
+          "name": "pegelstaende",
+          "label": "CKAN Action API Basis-URL",
+          "default": "https://open-data-musterstadt.ckan.de/api/3/action/",
+          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/",
+          "erforderlich": "ja"
+        }
+      ]
     },
     "messstellenResourceId": {
       "label": "Ressourcen-ID Messstellen",
