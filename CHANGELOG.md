@@ -1,5 +1,10 @@
 # Changelog - Pegelwatch
 
+## 1.29.0 - 2026-08-25
+- **CHG:** Proxy-Aufruf sendet die vollständige Ziel-URL statt nur Pfad+Query, damit die neue Origin-Allowlist-Prüfung der ODAS-Plattform greift (bisher implizite Auflösung gegen den ersten konfigurierten `apiurl`).
+- **FIX:** Toter Anbieter-Shortcode in Kontakt/Impressum ersetzt (`{{odp.anbieter.url-extern}}` → `{{odp.anbieter.url}}`).
+
+
 ## 1.28.0 - 2026-08-25
 - **CHG:** apiurls-Standard „Eine Quelle = eine vollständige URL“ umgesetzt: Zwei vollständige `datastore_search`-URLs (`pegel-messstellen`, `pegel-messwerte`) ersetzen Basis-URL + separate Ressourcen-IDs.
 - **CHG:** Instanzfelder `messstellenResourceId`/`messwerteResourceId` entfernt; der Code liest keine Resource-ID-Keys mehr, Pagination/Sortierung wird zur Laufzeit angehängt.
