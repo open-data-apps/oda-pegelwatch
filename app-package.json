@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "app-version": "1.27.0",
+  "app-version": "1.28.0",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
@@ -16,7 +16,7 @@
     "",
     "## Methodik",
     "",
-    "Die App lädt Messstellen und Messwerte aus zwei konfigurierten CKAN-DataStore-Ressourcen (`messstellenResourceId`, `messwerteResourceId`) über die CKAN Action API (`/api/3/action/datastore_search`) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
+    "Die App lädt Messstellen und Messwerte über zwei vollständige CKAN-DataStore-URLs (`apiurls`-Einträge `pegel-messstellen` und `pegel-messwerte`, jeweils datastore_search inklusive resource_id) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
     "",
     "Datensätze werden im Browser normalisiert (Pegel-ID, Name, Gewässer, Standort, Koordinaten, PEGELONLINE-URL, `pegelstand_in_m`, `zeitstempel`) und zu Stationen mit Historie zusammengeführt; Zeitstempel (ISO, deutsche Datumsformate) werden geparst, Trends und stündliche Änderungsraten berechnet und der Pegelverlauf nach Zeitfenster (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) aufbereitet.",
     "",
@@ -28,9 +28,9 @@
     "",
     "- **Open Data Portal:** [Open Data Musterstadt](https://open-data-musterstadt.ckan.de)",
     "- **Datensatz:** [Pegelstände Esslingen](https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen)",
-    "- **CKAN Action API:** [https://open-data-musterstadt.ckan.de/api/3/action/](https://open-data-musterstadt.ckan.de/api/3/action/)",
-    "- **Ressource Messstellen:** `49306025-b8fa-49eb-b39b-dceb697ba557`",
-    "- **Ressource Messwerte:** `a76c531e-fd9c-4fc4-a783-6d503446796d`",
+    "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100)",
+    "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d)",
+    "",
     "- **Fachquelle Wasserstände:** [PEGELONLINE](https://pegelonline.wsv.de/) – Wasserstraßen- und Schifffahrtsverwaltung des Bundes",
     "",
     "Angezeigt werden die in den Quellen vorhandenen Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle und vom Pflegestand des CKAN-Portals ab. Die App ist kein offizieller Warndienst.",
@@ -134,7 +134,7 @@
         "",
         "## Methodik",
         "",
-        "Die App lädt Messstellen und Messwerte aus zwei konfigurierten CKAN-DataStore-Ressourcen (`messstellenResourceId`, `messwerteResourceId`) über die CKAN Action API (`/api/3/action/datastore_search`) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
+        "Die App lädt Messstellen und Messwerte über zwei vollständige CKAN-DataStore-URLs (`apiurls`-Einträge `pegel-messstellen` und `pegel-messwerte`, jeweils datastore_search inklusive resource_id) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
         "",
         "Datensätze werden im Browser normalisiert (Pegel-ID, Name, Gewässer, Standort, Koordinaten, PEGELONLINE-URL, `pegelstand_in_m`, `zeitstempel`) und zu Stationen mit Historie zusammengeführt; Zeitstempel (ISO, deutsche Datumsformate) werden geparst, Trends und stündliche Änderungsraten berechnet und der Pegelverlauf nach Zeitfenster (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) aufbereitet.",
         "",
@@ -146,9 +146,9 @@
         "",
         "- **Open Data Portal:** [Open Data Musterstadt](https://open-data-musterstadt.ckan.de)",
         "- **Datensatz:** [Pegelstände Esslingen](https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen)",
-        "- **CKAN Action API:** [https://open-data-musterstadt.ckan.de/api/3/action/](https://open-data-musterstadt.ckan.de/api/3/action/)",
-        "- **Ressource Messstellen:** `49306025-b8fa-49eb-b39b-dceb697ba557`",
-        "- **Ressource Messwerte:** `a76c531e-fd9c-4fc4-a783-6d503446796d`",
+        "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100)",
+        "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d)",
+        "",
         "- **Fachquelle Wasserstände:** [PEGELONLINE](https://pegelonline.wsv.de/) – Wasserstraßen- und Schifffahrtsverwaltung des Bundes",
         "",
         "Angezeigt werden die in den Quellen vorhandenen Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle und vom Pflegestand des CKAN-Portals ab. Die App ist kein offizieller Warndienst.",
@@ -236,7 +236,7 @@
     "apiurls": {
       "label": "URLs zu Datenressourcen",
       "category": "datenherkunft",
-      "hilfe": "Direkter Download-, Datei- oder API-Endpunkt der tatsächlich verwendeten Datenquelle(n). Mehrere Einträge möglich.",
+      "hilfe": "Vollständige CKAN DataStore-URLs (datastore_search inklusive resource_id) für Messstellen- und Messwerte-Daten. Mehrere Einträge möglich.",
       "typ": "array",
       "format": {
         "typ": "url",
@@ -244,35 +244,20 @@
       },
       "urls": [
         {
-          "name": "pegelstaende",
-          "label": "CKAN Action API Basis-URL",
-          "default": "https://open-data-musterstadt.ckan.de/api/3/action/",
-          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/",
+          "name": "pegel-messstellen",
+          "label": "CKAN DataStore Messstellen",
+          "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
+          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
+          "erforderlich": "ja"
+        },
+        {
+          "name": "pegel-messwerte",
+          "label": "CKAN DataStore Messwerte",
+          "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
+          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
           "erforderlich": "ja"
         }
       ]
-    },
-    "messstellenResourceId": {
-      "label": "Ressourcen-ID Messstellen",
-      "category": "datenherkunft",
-      "hilfe": "CKAN DataStore Resource ID fuer die Messstellen-Stammdaten.",
-      "format": {
-        "typ": "string",
-        "laenge": 80
-      },
-      "default": "49306025-b8fa-49eb-b39b-dceb697ba557",
-      "erforderlich": "ja"
-    },
-    "messwerteResourceId": {
-      "label": "Ressourcen-ID Messwerte",
-      "category": "datenherkunft",
-      "hilfe": "CKAN DataStore Resource ID fuer die Pegel-Messwerte.",
-      "format": {
-        "typ": "string",
-        "laenge": 80
-      },
-      "default": "a76c531e-fd9c-4fc4-a783-6d503446796d",
-      "erforderlich": "ja"
     },
     "proxyAktiv": {
       "label": "ODAS-Proxy aktiv?",

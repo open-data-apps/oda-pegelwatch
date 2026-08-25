@@ -26,14 +26,14 @@ Diese App richtet sich an interessierte Bürgerinnen und Bürger, Menschen mit B
 
 ## Datenquelle
 
-Das App-Konzept sieht zwei CKAN-DataStore-Ressourcen vor:
+Das App-Konzept sieht zwei CKAN-DataStore-Ressourcen vor, die als vollständige `datastore_search`-URLs konfiguriert werden (Standard „Eine Quelle = eine vollständige URL"):
 
-| Ressource | Zweck | Default |
+| apiurls-Eintrag | Zweck | Default-URL |
 | --- | --- | --- |
-| `messstellenResourceId` | Stammdaten der Messstellen, inklusive Name, Gewässer, Standort, Koordinaten und PEGELONLINE-Verweis | `49306025-b8fa-49eb-b39b-dceb697ba557` |
-| `messwerteResourceId` | Dynamische Pegel-Messwerte mit Zeitstempel, Messstellenreferenz und Wasserstand | `a76c531e-fd9c-4fc4-a783-6d503446796d` |
+| `pegel-messstellen` | Stammdaten der Messstellen, inklusive Name, Gewässer, Standort, Koordinaten und PEGELONLINE-Verweis | `https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100` |
+| `pegel-messwerte` | Dynamische Pegel-Messwerte mit Zeitstempel, Messstellenreferenz und Wasserstand | `https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d` |
 
-Die Standard-URLs zeigen auf das im Konzept genannte CKAN-Musterportal `open-data-musterstadt.ckan.de`. Für produktive ODAS-Instanzen müssen `apiurls.pegelstaende`, `urlDaten` und die Ressourcen-IDs auf das reale Open-Data-Portal gesetzt werden.
+Die Standard-URLs zeigen auf das im Konzept genannte CKAN-Musterportal `open-data-musterstadt.ckan.de`. Für produktive ODAS-Instanzen müssen beide `apiurls`-Einträge und `urlDaten` auf das reale Open-Data-Portal gesetzt werden; die `resource_id` gehört jeweils in die URL.
 
 ## Konfiguration
 
@@ -41,16 +41,14 @@ Die App liest nur die fachlich nötigen Instanzfelder:
 
 | Key | Typ | Beschreibung |
 | --- | --- | --- |
-| `apiurls` | `array` | URLs zu Datenressourcen. Eintrag `pegelstaende`: CKAN Action API Basis-URL, z. B. `https://portal.example/api/3/action/` |
-| `messstellenResourceId` | `string` | Ressourcen-ID der Messstellen-Stammdaten |
-| `messwerteResourceId` | `string` | Ressourcen-ID der Pegel-Messwerte |
+| `apiurls` | `array` | Vollständige CKAN DataStore-URLs (datastore_search inklusive resource_id): Einträge `pegel-messstellen` und `pegel-messwerte` |
 | `proxyAktiv` | `dropdown` | `nein` für Direktabruf, `ja` für ODAS-Proxy `/app/odp-data` |
 
 Zusätzlich bleiben die template-eigenen ODAS-Felder wie `titel`, `seitentitel`, `icon`, `beschreibung`, `kontakt`, `impressum`, `datenschutz`, `fusszeile`, `brandingCSS` und `brandingCSSFile` erhalten. Die lokale Testkonfiguration liegt in [odas-config/config.json](odas-config/config.json) und spiegelt die in [app-package.json](app-package.json) deklarierten Instanzfelder.
 
 ## Proxy-Modell
 
-Im Direktmodus ruft die App CKAN über `GET {apiurls.pegelstaende}/datastore_search?...` ab. Wenn `proxyAktiv` auf `ja` steht, sendet sie `POST`-Anfragen an den ODAS-Proxy und übergibt nur Pfad und Query-String des Zielendpunkts als `path`-Parameter.
+Im Direktmodus ruft die App die konfigurierten `datastore_search`-URLs per `GET` ab (Pagination-/Sortierparameter ergänzt der Code zur Laufzeit). Wenn `proxyAktiv` auf `ja` steht, sendet sie `POST`-Anfragen an den ODAS-Proxy und übergibt nur Pfad und Query-String des Zielendpunkts als `path`-Parameter.
 
 Lokale Tests können die Proxy-Konfiguration und UI-Anzeige prüfen. Echte Proxy-Antworten sind erst in der ODAS-Live-Umgebung vollständig verifizierbar.
 
@@ -161,7 +159,7 @@ ausgeliefert.
 
 Alle für die Darstellung benötigten Programmbibliotheken (Bootstrap, Chart.js) werden lokal aus `app/vendor/` ausgeliefert; dafür werden beim Aufruf keine externen Server kontaktiert. Die App enthält seit Entfernung der Kartenansicht (v1.2.0) keine Kartenkomponente mehr, entsprechend werden auch keine Kartenkachel-Server mehr angesprochen.
 
-Kontaktiert wird lediglich die in der Instanz-Konfiguration hinterlegte Datenquelle (`apiurls.pegelstaende`), sobald die App Messstellen- und Messwertdaten lädt.
+Kontaktiert wird lediglich die in der Instanz-Konfiguration hinterlegte Datenquelle (die beiden `apiurls`-Einträge `pegel-messstellen` und `pegel-messwerte`), sobald die App Messstellen- und Messwertdaten lädt.
 
 ### Auslieferung an den ODAS
 

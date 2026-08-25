@@ -15,8 +15,6 @@ const pegelwatchInstances = new Map();
 
 const PEGELWATCH_DEFAULTS = {
   title: "Pegelwatch",
-  messstellenResourceId: "49306025-b8fa-49eb-b39b-dceb697ba557",
-  messwerteResourceId: "a76c531e-fd9c-4fc4-a783-6d503446796d",
   refreshMs: 5 * 60 * 1000,
 };
 
@@ -101,8 +99,19 @@ function app(configdata = {}, enclosingHtmlDivElement) {
   enclosingHtmlDivElement._pegelWatchState = state;
   pegelwatchInstances.set(enclosingHtmlDivElement, state);
 
-  const quelle = String(state.config.apiurl || "").trim();
-  if (!quelle || /^\{\{.*\}\}$/.test(quelle) || /^<.*>$/.test(quelle)) {
+  // Eine Quelle = eine vollständige URL: Beide apiurls-Einträge müssen
+  // vollständige datastore_search-URLs sein; fehlt einer, ist keine Quelle
+  // konfiguriert.
+  const quelleMessstellen = String(state.config.messstellenUrl || "").trim();
+  const quelleMesswerte = String(state.config.messwerteUrl || "").trim();
+  if (
+    !quelleMessstellen ||
+    !quelleMesswerte ||
+    /^\{\{.*\}\}$/.test(quelleMessstellen) ||
+    /^\{\{.*\}\}$/.test(quelleMesswerte) ||
+    /^<.*>$/.test(quelleMessstellen) ||
+    /^<.*>$/.test(quelleMesswerte)
+  ) {
     enclosingHtmlDivElement.innerHTML =
       '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
     return null;
@@ -147,13 +156,8 @@ function normalizeAppConfig(config = {}) {
   return {
     ...config,
     titel: String(config.titel || PEGELWATCH_DEFAULTS.title),
-    apiurl: getOdasApiUrl(config, "pegelstaende"),
-    messstellenResourceId: String(
-      config.messstellenResourceId || PEGELWATCH_DEFAULTS.messstellenResourceId
-    ),
-    messwerteResourceId: String(
-      config.messwerteResourceId || PEGELWATCH_DEFAULTS.messwerteResourceId
-    ),
+    messstellenUrl: getOdasApiUrl(config, "pegel-messstellen"),
+    messwerteUrl: getOdasApiUrl(config, "pegel-messwerte"),
     proxyAktiv: String(config.proxyAktiv || "nein").trim().toLowerCase(),
     urlDaten: String(config.urlDaten || ""),
     weiterfuehrendeLinks: String(config.weiterfuehrendeLinks || "").trim(),
@@ -314,8 +318,8 @@ async function loadDataAndRender(container, state, silent) {
 
   try {
     const [stationsResponse, measurementsResponse] = await Promise.all([
-      fetchCkanRecords(state.config, state.config.messstellenResourceId, 100, "Messstellen"),
-      fetchCkanRecords(state.config, state.config.messwerteResourceId, null, "Messwerte", { sort: "zeitstempel desc" }, onProgress),
+      fetchCkanRecords(state.config, state.config.messstellenUrl, 100, "Messstellen"),
+      fetchCkanRecords(state.config, state.config.messwerteUrl, null, "Messwerte", { sort: "zeitstempel desc" }, onProgress),
     ]);
 
     if (state.disposed) return;
@@ -344,7 +348,7 @@ async function loadDataAndRender(container, state, silent) {
   }
 }
 
-async function fetchCkanRecords(config, resourceId, limit, label, extraParams = {}, onProgress) {
+async function fetchCkanRecords(config, targetUrl, limit, label, extraParams = {}, onProgress) {
   let allRecords = [];
   let offset = 0;
   const pageSize = 500;
@@ -357,7 +361,7 @@ async function fetchCkanRecords(config, resourceId, limit, label, extraParams = 
     }
 
     const params = { ...extraParams, offset };
-    const url = buildCkanDatastoreUrl(config, resourceId, currentLimit, params);
+    const url = buildCkanDatastoreUrl(targetUrl, currentLimit, params);
     const rawContent = await fetchOdasResource(url, config);
     let data;
 
@@ -389,10 +393,10 @@ async function fetchCkanRecords(config, resourceId, limit, label, extraParams = 
   return allRecords;
 }
 
-function buildCkanDatastoreUrl(config = {}, resourceId, limit = 100, extraParams = {}) {
-  const baseUrl = normalizeCkanActionBase(config.apiurl);
-  const url = new URL("datastore_search", baseUrl);
-  url.searchParams.set("resource_id", resourceId);
+function buildCkanDatastoreUrl(targetUrl, limit = 100, extraParams = {}) {
+  // Eine Quelle = eine vollständige URL: targetUrl enthaelt bereits resource_id;
+  // hier kommen nur noch Laufzeit-Parameter dazu (limit, offset, sort).
+  const url = new URL(targetUrl);
   url.searchParams.set("limit", String(limit));
 
   Object.entries(extraParams).forEach(([key, value]) => {
@@ -402,17 +406,6 @@ function buildCkanDatastoreUrl(config = {}, resourceId, limit = 100, extraParams
   });
 
   return url.toString();
-}
-
-function normalizeCkanActionBase(apiurl) {
-  let baseUrl = String(apiurl || "").trim();
-
-  baseUrl = baseUrl.replace(/\/+$/, "");
-  if (!/\/api\/(?:3\/)?action$/i.test(baseUrl)) {
-    baseUrl = `${baseUrl}/api/3/action`;
-  }
-
-  return `${baseUrl}/`;
 }
 
 function isOdasProxyEnabled(configdata = {}) {
@@ -1377,7 +1370,6 @@ if (typeof module !== "undefined" && module.exports) {
     isOdasProxyEnabled,
     mergeStationsWithMeasurements,
     normalizeAppConfig,
-    normalizeCkanActionBase,
     normalizePegelValue,
     parsePegelTimestamp,
     sortStations,

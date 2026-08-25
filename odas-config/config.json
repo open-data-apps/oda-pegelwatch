@@ -8,7 +8,7 @@
     "<p>Pegelwatch macht Wasserstandsdaten für den Neckar im Stadtgebiet Esslingen als Diashow mit Verlaufsgrafik zugänglich.</p>",
     "<p>Die App führt Messstellen-Stammdaten und aktuelle Messwerte aus zwei CKAN-DataStore-Ressourcen zusammen und bereitet sie als zeitlich einstellbaren Pegelverlauf auf. Lokale Alarmschwellen werden nur im Browser gespeichert und dienen ausschließlich der optischen Orientierung – die App ist kein offizieller Warndienst.</p>",
     "<h2>Methodik</h2>",
-    "<p>Die App lädt Messstellen und Messwerte aus zwei konfigurierten CKAN-DataStore-Ressourcen (<code>messstellenResourceId</code>, <code>messwerteResourceId</code>) über die CKAN Action API (<code>/api/3/action/datastore_search</code>) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.</p>",
+    "<p>Die App lädt Messstellen und Messwerte aus zwei konfigurierten CKAN-DataStore-Ressourcen über zwei vollständige CKAN-DataStore-URLs (<code>pegel-messstellen</code>, <code>pegel-messwerte</code>, jeweils datastore_search inklusive resource_id) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.</p>",
     "<p>Datensätze werden im Browser normalisiert (Pegel-ID, Name, Gewässer, Standort, Koordinaten, PEGELONLINE-URL, <code>pegelstand_in_m</code>, <code>zeitstempel</code>) und zu Stationen mit Historie zusammengeführt; Zeitstempel (ISO, deutsche Datumsformate) werden geparst, Trends und stündliche Änderungsraten berechnet und der Pegelverlauf nach Zeitfenster (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) aufbereitet.</p>",
     "<p>Für kurze Zeitfenster wird die Historie lückenlos gezeichnet, ab 7 Tagen erfolgt ein Resampling, das fehlende Werte als sichtbare Lücken im Chart darstellt. Die Diashow-Navigation (Vor/Zurück, Dropdown) wählt die Messstelle, die Verlaufsgrafik zeigt den Pegelverlauf und die Detailansicht Stammdaten sowie die aktuelle Messung. Eine lokale Alarmschwelle je Station wird ausschließlich im <code>localStorage</code> gespeichert, färbt betroffene Stationen visuell ein und wird nicht an einen Server übertragen – sie ist kein offizieller Warndienst und löst keine externen Warnungen aus.</p>",
     "<h2>Datenquelle</h2>",
@@ -16,9 +16,9 @@
     "<ul>",
     "<li><strong>Open Data Portal:</strong> <a href=\"https://open-data-musterstadt.ckan.de\" target=\"_blank\">Open Data Musterstadt</a></li>",
     "<li><strong>Datensatz:</strong> <a href=\"https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen\" target=\"_blank\">Pegelstände Esslingen</a></li>",
-    "<li><strong>CKAN Action API:</strong> <a href=\"https://open-data-musterstadt.ckan.de/api/3/action/\" target=\"_blank\">https://open-data-musterstadt.ckan.de/api/3/action/</a></li>",
-    "<li><strong>Ressource Messstellen:</strong> <code>49306025-b8fa-49eb-b39b-dceb697ba557</code></li>",
-    "<li><strong>Ressource Messwerte:</strong> <code>a76c531e-fd9c-4fc4-a783-6d503446796d</code></li>",
+    "<li><strong>Ressource Messstellen:</strong> <a href=\"https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&amp;limit=100\" target=\"_blank\">DataStore-Abfrage Messstellen</a></li>",
+    "<li><strong>Ressource Messwerte:</strong> <a href=\"https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d\" target=\"_blank\">DataStore-Abfrage Messwerte</a></li>",
+    "",
     "<li><strong>Fachquelle Wasserstände:</strong> <a href=\"https://pegelonline.wsv.de/\" target=\"_blank\">PEGELONLINE</a> – Wasserstraßen- und Schifffahrtsverwaltung des Bundes</li>",
     "</ul>",
     "<p>Angezeigt werden die in den Quellen vorhandenen Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle und vom Pflegestand des CKAN-Portals ab. Die App ist kein offizieller Warndienst.</p>",
@@ -41,13 +41,16 @@
   "fusszeile": "(C) Copyright 2026 | App: Pegelwatch | Daten: Open Data Portal",
   "apiurls": [
     {
-      "name": "pegelstaende",
-      "label": "CKAN Action API Basis-URL",
-      "url": "https://open-data-musterstadt.ckan.de/api/3/action/"
+      "name": "pegel-messstellen",
+      "label": "CKAN DataStore Messstellen",
+      "url": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100"
+    },
+    {
+      "name": "pegel-messwerte",
+      "label": "CKAN DataStore Messwerte",
+      "url": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d"
     }
   ],
-  "messstellenResourceId": "49306025-b8fa-49eb-b39b-dceb697ba557",
-  "messwerteResourceId": "a76c531e-fd9c-4fc4-a783-6d503446796d",
   "proxyAktiv": "nein",
   "weiterfuehrendeLinks": "<ul><li><a href='https://www.pegelonline.wsv.de/' target='_blank'>PEGELONLINE (WSV)</a></li><li><a href='https://open-data-app-store.de' target='_blank'>Open Data App Store</a></li></ul>",
   "datenquelleHinweis": "<p>Die Pegeldaten stammen von <a href=\"https://www.pegelonline.wsv.de/\" target=\"_blank\" rel=\"noopener\">PEGELONLINE</a>, dem bundesweiten Pegelportal der Wasserstraßen- und Schifffahrtsverwaltung des Bundes (WSV). Die Messwerte werden aus den CKAN-DataStore-Ressourcen des konfigurierten Open-Data-Portals geladen und alle fünf Minuten aktualisiert.</p><p>Angezeigt werden die in der Quelle verfügbaren Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle ab.</p>",

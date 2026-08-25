@@ -1,5 +1,9 @@
 # Changelog - Pegelwatch
 
+## 1.28.0 - 2026-08-25
+- **CHG:** apiurls-Standard „Eine Quelle = eine vollständige URL“ umgesetzt: Zwei vollständige `datastore_search`-URLs (`pegel-messstellen`, `pegel-messwerte`) ersetzen Basis-URL + separate Ressourcen-IDs.
+- **CHG:** Instanzfelder `messstellenResourceId`/`messwerteResourceId` entfernt; der Code liest keine Resource-ID-Keys mehr, Pagination/Sortierung wird zur Laufzeit angehängt.
+
 ## 1.27.0 - 2026-08-22
 - **CHG:** `version` in `app-package.json` zu `app-version` umbenannt.
 - **ENH:** Top-Level-Feld `app-package-version` ergänzt (Wert `"2"`: mehrere benannte API-URLs über `instanz-config.apiurls`).
