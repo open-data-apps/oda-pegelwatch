@@ -1,132 +1,14 @@
 {
-  "app-entwickler-id": "12343",
-  "app-entwickler-name": "ondics-gmbh",
-  "name-in-url": "pegelwatch",
-  "name": "Pegelwatch",
-  "app-version": "1.29.0",
-  "app-package-version": "2",
-  "odas-app-icon": "assets/odas-app-icon.svg",
-  "app-icon": "app/logo_ondics.png",
-  "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
-  "beschreibung": [
-    "_multiline_",
-    "Pegelwatch macht Wasserstandsdaten für den Neckar im Stadtgebiet Esslingen als Diashow mit Verlaufsgrafik zugänglich.",
-    "",
-    "Die App führt Messstellen-Stammdaten und aktuelle Messwerte aus zwei CKAN-DataStore-Ressourcen zusammen und bereitet sie als zeitlich einstellbaren Pegelverlauf auf. Lokale Alarmschwellen werden nur im Browser gespeichert und dienen ausschließlich der optischen Orientierung – die App ist kein offizieller Warndienst.",
-    "",
-    "## Methodik",
-    "",
-    "Die App lädt Messstellen und Messwerte über zwei vollständige CKAN-DataStore-URLs (`apiurls`-Einträge `pegel-messstellen` und `pegel-messwerte`, jeweils datastore_search inklusive resource_id) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
-    "",
-    "Datensätze werden im Browser normalisiert (Pegel-ID, Name, Gewässer, Standort, Koordinaten, PEGELONLINE-URL, `pegelstand_in_m`, `zeitstempel`) und zu Stationen mit Historie zusammengeführt; Zeitstempel (ISO, deutsche Datumsformate) werden geparst, Trends und stündliche Änderungsraten berechnet und der Pegelverlauf nach Zeitfenster (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) aufbereitet.",
-    "",
-    "Für kurze Zeitfenster wird die Historie lückenlos gezeichnet, ab 7 Tagen erfolgt ein Resampling, das fehlende Werte als sichtbare Lücken im Chart darstellt. Die Diashow-Navigation (Vor/Zurück, Dropdown) wählt die Messstelle, die Verlaufsgrafik zeigt den Pegelverlauf und die Detailansicht Stammdaten sowie die aktuelle Messung. Eine lokale Alarmschwelle je Station wird ausschließlich im `localStorage` gespeichert, färbt betroffene Stationen visuell ein und wird nicht an einen Server übertragen – sie ist kein offizieller Warndienst und löst keine externen Warnungen aus.",
-    "",
-    "## Datenquelle",
-    "",
-    "Die App nutzt offene Pegeldaten aus dem Open-Data-Portal und der Fachquelle PEGELONLINE über CKAN-DataStore-Ressourcen.",
-    "",
-    "- **Open Data Portal:** [Open Data Musterstadt](https://open-data-musterstadt.ckan.de)",
-    "- **Datensatz:** [Pegelstände Esslingen](https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen)",
-    "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100)",
-    "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d)",
-    "",
-    "- **Fachquelle Wasserstände:** [PEGELONLINE](https://pegelonline.wsv.de/) – Wasserstraßen- und Schifffahrtsverwaltung des Bundes",
-    "",
-    "Angezeigt werden die in den Quellen vorhandenen Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle und vom Pflegestand des CKAN-Portals ab. Die App ist kein offizieller Warndienst.",
-    "",
-    "## Open Data App",
-    "",
-    "Diese App ist eine Open Data App und kann im [Open Data App Store](https://open-data-app-store.de/) betrieben werden. Sie ist Open Source und lässt sich mit kommunalen Pegel- oder Gewässerdaten konfigurieren.",
-    "",
-    "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
-    "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
-    "- [oda-pegelwatch](https://github.com/open-data-apps/oda-pegelwatch) – das Repository dieser App"
-  ],
-  "tags-funktion": [
-    "Umwelt",
-    "Dashboard",
-    "Visualisierung"
-  ],
-  "tags-dateityp": [
-    "API",
-    "JSON"
-  ],
-  "tags-datenart": [
-    "Pegel",
-    "Messwerte",
-    "Messstellen"
-  ],
-  "screenshots": [
-    "assets/Desktop_Screenshot.png",
-    "assets/Mobile_Screenshot.png"
-  ],
-  "daten": {
-    "beschreibung": "Die App verarbeitet zwei CKAN-DataStore-Ressourcen: Messstellen-Stammdaten mit Koordinaten und PEGELONLINE-Verweisen sowie dynamische Pegel-Messwerte mit Zeitstempel und Wasserstand. Die verknuepfte Ansicht wird in assets/schema.json beschrieben.",
-    "schema": "assets/schema.json",
-    "beispiel": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
-    "beispiel-url": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen"
-  },
-  "branding-css": "",
-  "api-version": "1",
-  "instanz-config": {
-    "seitentitel": {
-      "label": "Seitentitel",
-      "category": "allgemein",
-      "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt.",
-      "default": "Pegelwatch",
-      "format": {
-        "typ": "string",
-        "laenge": 80
-      },
-      "erforderlich": "ja"
-    },
-    "titel": {
-      "label": "Titel",
-      "category": "allgemein",
-      "hilfe": "Der Titel wird in der Titelzeile der App angezeigt.",
-      "default": "Pegelwatch",
-      "format": {
-        "typ": "string",
-        "laenge": 80
-      },
-      "erforderlich": "ja"
-    },
-    "icon": {
-      "label": "App-Icon",
-      "category": "allgemein",
-      "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt.",
-      "default": "logo_ondics.png",
-      "format": {
-        "typ": "image",
-        "hoehe": 100,
-        "breite": 300
-      },
-      "erforderlich": "ja"
-    },
-    "kontakt": {
-      "label": "Kontakt",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menuepunkt Kontakt angezeigt.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "Bei Fragen zur App wenden Sie sich bitte an den Betreiber der jeweiligen ODAS-Instanz oder an den im Open-Data-Portal angegebenen Datenanbieter.",
-        "",
-        "- E-Mail: [info@ondics.de](mailto:info@ondics.de)"
-      ],
-      "erforderlich": "ja"
-    },
-    "beschreibung": {
-      "label": "Beschreibung",
-      "category": "beschreibung",
-      "hilfe": "Der Text wird im Menuepunkt Ueber diese App angezeigt.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
+    "app-entwickler-id": "12343",
+    "app-entwickler-name": "ondics-gmbh",
+    "name-in-url": "pegelwatch",
+    "name": "Pegelwatch",
+    "app-version": "1.29.0",
+    "app-package-version": "2",
+    "odas-app-icon": "assets/odas-app-icon.svg",
+    "app-icon": "app/logo_ondics.png",
+    "kurzbeschreibung": "Dashboard fuer Pegelstaende am Neckar in Esslingen mit Diashow-Navigation, Verlaufsgrafik, flexiblen Zeitfenstern und lokalen Warnschwellen.",
+    "beschreibung": [
         "_multiline_",
         "Pegelwatch macht Wasserstandsdaten für den Neckar im Stadtgebiet Esslingen als Diashow mit Verlaufsgrafik zugänglich.",
         "",
@@ -145,9 +27,9 @@
         "Die App nutzt offene Pegeldaten aus dem Open-Data-Portal und der Fachquelle PEGELONLINE über CKAN-DataStore-Ressourcen.",
         "",
         "- **Open Data Portal:** [Open Data Musterstadt](https://open-data-musterstadt.ckan.de)",
-        "- **Datensatz:** [Pegelstände Esslingen](https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen)",
-        "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100)",
-        "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte](https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d)",
+        "- **Datensatz:** [Pegelstände Esslingen]({{{appinstanz.urlDaten}}})",
+        "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen]({{{appinstanz.apiurls.1}}})",
+        "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte]({{{appinstanz.apiurls.2}}})",
         "",
         "- **Fachquelle Wasserstände:** [PEGELONLINE](https://pegelonline.wsv.de/) – Wasserstraßen- und Schifffahrtsverwaltung des Bundes",
         "",
@@ -160,183 +42,301 @@
         "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
         "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
         "- [oda-pegelwatch](https://github.com/open-data-apps/oda-pegelwatch) – das Repository dieser App"
-      ],
-      "erforderlich": "ja"
+    ],
+    "tags-funktion": [
+        "Umwelt",
+        "Dashboard",
+        "Visualisierung"
+    ],
+    "tags-dateityp": [
+        "API",
+        "JSON"
+    ],
+    "tags-datenart": [
+        "Pegel",
+        "Messwerte",
+        "Messstellen"
+    ],
+    "screenshots": [
+        "assets/Desktop_Screenshot.png",
+        "assets/Mobile_Screenshot.png"
+    ],
+    "daten": {
+        "beschreibung": "Die App verarbeitet zwei CKAN-DataStore-Ressourcen: Messstellen-Stammdaten mit Koordinaten und PEGELONLINE-Verweisen sowie dynamische Pegel-Messwerte mit Zeitstempel und Wasserstand. Die verknuepfte Ansicht wird in assets/schema.json beschrieben.",
+        "schema": "assets/schema.json",
+        "beispiel": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
+        "beispiel-url": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen"
     },
-    "impressum": {
-      "label": "Impressum",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menuepunkt Impressum angezeigt.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "## Anbieter",
-        "",
-        "{{{odp.anbieter.orgName}}}  ",
-        "{{{odp.anbieter.orgUnit}}}",
-        "",
-        "{{odp.anbieter.strasse}}  ",
-        "{{odp.anbieter.plzort}}",
-        "",
-        "Website: [{{odp.anbieter.url}}]({{odp.anbieter.url}})",
-        "",
-        "## Ansprechpartner",
-        "",
-        "{{odp.anbieter.kontakt-bezeichnung}}  ",
-        "{{odp.anbieter.name}}",
-        "",
-        "## Kontakt",
-        "",
-        "Tel.: {{odp.anbieter.tel}}  ",
-        "E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
-      ],
-      "erforderlich": "ja"
-    },
-    "datenschutz": {
-      "label": "Datenschutz",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Der Text wird im Menuepunkt Datenschutz angezeigt.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": [
-        "_multiline_",
-        "Diese App verarbeitet keine personenbezogenen Daten. Lokale Alarmschwellen werden ausschließlich im `localStorage` des verwendeten Browsers gespeichert und können dort jederzeit gelöscht werden.",
-        "",
-        "Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.",
-        "",
-        "Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter `proxyAktiv` der Instanz-Konfiguration."
-      ],
-      "erforderlich": "ja"
-    },
-    "urlDaten": {
-      "label": "URL zum Datensatz im ODP",
-      "category": "datenherkunft",
-      "hilfe": "Link zur Datensatzseite im Open-Data-Portal.",
-      "format": {
-        "typ": "url"
-      },
-      "default": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
-      "beispiel": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
-      "erforderlich": "ja"
-    },
-    "fusszeile": {
-      "label": "Fusszeile",
-      "category": "kontakt-rechtliches",
-      "hilfe": "Wird unten auf der App-Seite angezeigt.",
-      "format": {
-        "typ": "string",
-        "laenge": 160
-      },
-      "default": "(C) Copyright {{jahr}} | App: Pegelwatch | Daten: Open Data Portal",
-      "erforderlich": "ja"
-    },
-    "apiurls": {
-      "label": "URLs zu Datenressourcen",
-      "category": "datenherkunft",
-      "hilfe": "Vollständige CKAN DataStore-URLs (datastore_search inklusive resource_id) für Messstellen- und Messwerte-Daten. Mehrere Einträge möglich.",
-      "typ": "array",
-      "format": {
-        "typ": "url",
-        "laenge": 500
-      },
-      "urls": [
-        {
-          "name": "pegel-messstellen",
-          "label": "CKAN DataStore Messstellen",
-          "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
-          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
-          "erforderlich": "ja"
+    "branding-css": "",
+    "api-version": "1",
+    "instanz-config": {
+        "seitentitel": {
+            "label": "Seitentitel",
+            "category": "allgemein",
+            "hilfe": "Der Seitentitel wird im Browser-Tab der App angezeigt.",
+            "default": "Pegelwatch",
+            "format": {
+                "typ": "string",
+                "laenge": 80
+            },
+            "erforderlich": "ja"
         },
-        {
-          "name": "pegel-messwerte",
-          "label": "CKAN DataStore Messwerte",
-          "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
-          "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
-          "erforderlich": "ja"
+        "titel": {
+            "label": "Titel",
+            "category": "allgemein",
+            "hilfe": "Der Titel wird in der Titelzeile der App angezeigt.",
+            "default": "Pegelwatch",
+            "format": {
+                "typ": "string",
+                "laenge": 80
+            },
+            "erforderlich": "ja"
+        },
+        "icon": {
+            "label": "App-Icon",
+            "category": "allgemein",
+            "hilfe": "Das Icon wird links oben in der Titelzeile angezeigt.",
+            "default": "logo_ondics.png",
+            "format": {
+                "typ": "image",
+                "hoehe": 100,
+                "breite": 300
+            },
+            "erforderlich": "ja"
+        },
+        "kontakt": {
+            "label": "Kontakt",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menuepunkt Kontakt angezeigt.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Bei Fragen zur App wenden Sie sich bitte an den Betreiber der jeweiligen ODAS-Instanz oder an den im Open-Data-Portal angegebenen Datenanbieter.",
+                "",
+                "- E-Mail: [info@ondics.de](mailto:info@ondics.de)"
+            ],
+            "erforderlich": "ja"
+        },
+        "beschreibung": {
+            "label": "Beschreibung",
+            "category": "beschreibung",
+            "hilfe": "Der Text wird im Menuepunkt Ueber diese App angezeigt.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Pegelwatch macht Wasserstandsdaten für den Neckar im Stadtgebiet Esslingen als Diashow mit Verlaufsgrafik zugänglich.",
+                "",
+                "Die App führt Messstellen-Stammdaten und aktuelle Messwerte aus zwei CKAN-DataStore-Ressourcen zusammen und bereitet sie als zeitlich einstellbaren Pegelverlauf auf. Lokale Alarmschwellen werden nur im Browser gespeichert und dienen ausschließlich der optischen Orientierung – die App ist kein offizieller Warndienst.",
+                "",
+                "## Methodik",
+                "",
+                "Die App lädt Messstellen und Messwerte über zwei vollständige CKAN-DataStore-URLs (`apiurls`-Einträge `pegel-messstellen` und `pegel-messwerte`, jeweils datastore_search inklusive resource_id) direkt im Browser – im Live-Betrieb optional über den ODAS-Proxy – paginiert in Schritten von 500 mit Fortschrittsanzeige und aktualisiert den Datenbestand automatisch alle fünf Minuten.",
+                "",
+                "Datensätze werden im Browser normalisiert (Pegel-ID, Name, Gewässer, Standort, Koordinaten, PEGELONLINE-URL, `pegelstand_in_m`, `zeitstempel`) und zu Stationen mit Historie zusammengeführt; Zeitstempel (ISO, deutsche Datumsformate) werden geparst, Trends und stündliche Änderungsraten berechnet und der Pegelverlauf nach Zeitfenster (24 Std., 48 Std., 72 Std., 7 Tage, 1 Monat, 1 Jahr) aufbereitet.",
+                "",
+                "Für kurze Zeitfenster wird die Historie lückenlos gezeichnet, ab 7 Tagen erfolgt ein Resampling, das fehlende Werte als sichtbare Lücken im Chart darstellt. Die Diashow-Navigation (Vor/Zurück, Dropdown) wählt die Messstelle, die Verlaufsgrafik zeigt den Pegelverlauf und die Detailansicht Stammdaten sowie die aktuelle Messung. Eine lokale Alarmschwelle je Station wird ausschließlich im `localStorage` gespeichert, färbt betroffene Stationen visuell ein und wird nicht an einen Server übertragen – sie ist kein offizieller Warndienst und löst keine externen Warnungen aus.",
+                "",
+                "## Datenquelle",
+                "",
+                "Die App nutzt offene Pegeldaten aus dem Open-Data-Portal und der Fachquelle PEGELONLINE über CKAN-DataStore-Ressourcen.",
+                "",
+                "- **Open Data Portal:** [Open Data Musterstadt](https://open-data-musterstadt.ckan.de)",
+                "- **Datensatz:** [Pegelstände Esslingen]({{{appinstanz.urlDaten}}})",
+                "- **Ressource Messstellen:** [DataStore-Abfrage Messstellen]({{{appinstanz.apiurls.1}}})",
+                "- **Ressource Messwerte:** [DataStore-Abfrage Messwerte]({{{appinstanz.apiurls.2}}})",
+                "",
+                "- **Fachquelle Wasserstände:** [PEGELONLINE](https://pegelonline.wsv.de/) – Wasserstraßen- und Schifffahrtsverwaltung des Bundes",
+                "",
+                "Angezeigt werden die in den Quellen vorhandenen Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle und vom Pflegestand des CKAN-Portals ab. Die App ist kein offizieller Warndienst.",
+                "",
+                "## Open Data App",
+                "",
+                "Diese App ist eine Open Data App und kann im [Open Data App Store](https://open-data-app-store.de/) betrieben werden. Sie ist Open Source und lässt sich mit kommunalen Pegel- oder Gewässerdaten konfigurieren.",
+                "",
+                "- [Open Data App Store](https://open-data-app-store.de/) – die Plattform für Open Data Apps",
+                "- [Alle Open Data Apps auf GitHub](https://github.com/open-data-apps) – die Organisation mit allen Apps",
+                "- [oda-pegelwatch](https://github.com/open-data-apps/oda-pegelwatch) – das Repository dieser App"
+            ],
+            "erforderlich": "ja"
+        },
+        "impressum": {
+            "label": "Impressum",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menuepunkt Impressum angezeigt.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "## Anbieter",
+                "",
+                "{{{odp.anbieter.orgName}}}  ",
+                "{{{odp.anbieter.orgUnit}}}",
+                "",
+                "{{odp.anbieter.strasse}}  ",
+                "{{odp.anbieter.plzort}}",
+                "",
+                "Website: [{{odp.anbieter.url}}]({{odp.anbieter.url}})",
+                "",
+                "## Ansprechpartner",
+                "",
+                "{{odp.anbieter.kontakt-bezeichnung}}  ",
+                "{{odp.anbieter.name}}",
+                "",
+                "## Kontakt",
+                "",
+                "Tel.: {{odp.anbieter.tel}}  ",
+                "E-Mail: [{{odp.anbieter.email}}](mailto:{{odp.anbieter.email}})"
+            ],
+            "erforderlich": "ja"
+        },
+        "datenschutz": {
+            "label": "Datenschutz",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Der Text wird im Menuepunkt Datenschutz angezeigt.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": [
+                "_multiline_",
+                "Diese App verarbeitet keine personenbezogenen Daten. Lokale Alarmschwellen werden ausschließlich im `localStorage` des verwendeten Browsers gespeichert und können dort jederzeit gelöscht werden.",
+                "",
+                "Alle für die Darstellung benötigten Programmbibliotheken werden mit der App ausgeliefert. Beim Aufruf werden dafür keine externen Server kontaktiert.",
+                "",
+                "Die angezeigten Daten werden vom Browser direkt aus der konfigurierten Datenquelle geladen. Dabei werden technisch bedingt IP-Adresse und Browserkennung an deren Betreiber übermittelt. Maßgeblich ist der Schalter `proxyAktiv` der Instanz-Konfiguration."
+            ],
+            "erforderlich": "ja"
+        },
+        "urlDaten": {
+            "label": "URL zum Datensatz im ODP",
+            "category": "datenherkunft",
+            "hilfe": "Link zur Datensatzseite im Open-Data-Portal.",
+            "format": {
+                "typ": "url"
+            },
+            "default": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
+            "beispiel": "https://open-data-musterstadt.ckan.de/dataset/pegelstande-esslingen",
+            "erforderlich": "ja"
+        },
+        "fusszeile": {
+            "label": "Fusszeile",
+            "category": "kontakt-rechtliches",
+            "hilfe": "Wird unten auf der App-Seite angezeigt.",
+            "format": {
+                "typ": "string",
+                "laenge": 160
+            },
+            "default": "(C) Copyright {{jahr}} | App: Pegelwatch | Daten: Open Data Portal",
+            "erforderlich": "ja"
+        },
+        "apiurls": {
+            "label": "URLs zu Datenressourcen",
+            "category": "datenherkunft",
+            "hilfe": "Vollständige CKAN DataStore-URLs (datastore_search inklusive resource_id) für Messstellen- und Messwerte-Daten. Mehrere Einträge möglich.",
+            "typ": "array",
+            "format": {
+                "typ": "url",
+                "laenge": 500
+            },
+            "urls": [
+                {
+                    "name": "pegel-messstellen",
+                    "label": "CKAN DataStore Messstellen",
+                    "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
+                    "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=49306025-b8fa-49eb-b39b-dceb697ba557&limit=100",
+                    "erforderlich": "ja"
+                },
+                {
+                    "name": "pegel-messwerte",
+                    "label": "CKAN DataStore Messwerte",
+                    "default": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
+                    "beispiel": "https://open-data-musterstadt.ckan.de/api/3/action/datastore_search?resource_id=a76c531e-fd9c-4fc4-a783-6d503446796d",
+                    "erforderlich": "ja"
+                }
+            ]
+        },
+        "proxyAktiv": {
+            "label": "ODAS-Proxy aktiv?",
+            "category": "datenherkunft",
+            "hilfe": "Legt fest, ob Datenabrufe direkt oder ueber den ODAS-CORS-Proxy /app/odp-data erfolgen.",
+            "format": {
+                "typ": "dropdown",
+                "optionen": [
+                    "nein",
+                    "ja"
+                ]
+            },
+            "default": "nein",
+            "erforderlich": "ja"
+        },
+        "weiterfuehrendeLinks": {
+            "label": "Weiterfuehrende Links",
+            "category": "beschreibung",
+            "hilfe": "Verwandte Datensaetze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": "- [PEGELONLINE (WSV)](https://www.pegelonline.wsv.de/)\n- [Open Data App Store](https://open-data-app-store.de)",
+            "erforderlich": "nein"
+        },
+        "datenquelleHinweis": {
+            "label": "Methodik / Datenquelle-Hinweis",
+            "category": "beschreibung",
+            "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
+            "format": {
+                "typ": "markdown"
+            },
+            "default": "Die Pegeldaten stammen von [PEGELONLINE](https://www.pegelonline.wsv.de/), dem bundesweiten Pegelportal der Wasserstraßen- und Schifffahrtsverwaltung des Bundes (WSV). Die Messwerte werden aus den CKAN-DataStore-Ressourcen des konfigurierten Open-Data-Portals geladen und alle fünf Minuten aktualisiert.\n\nAngezeigt werden die in der Quelle verfügbaren Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle ab.",
+            "erforderlich": "nein"
+        },
+        "datenStand": {
+            "label": "Datenstand",
+            "category": "beschreibung",
+            "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
+            "format": {
+                "typ": "string"
+            },
+            "default": "Stand: laufend von PEGELONLINE (WSV)",
+            "erforderlich": "nein"
+        },
+        "sprache": {
+            "label": "Sprache der App",
+            "category": "allgemein",
+            "hilfe": "Angabe der App-Sprache.",
+            "format": {
+                "typ": "dropdown",
+                "optionen": [
+                    "de"
+                ]
+            },
+            "default": "de",
+            "erforderlich": "ja"
+        },
+        "brandingCSS": {
+            "label": "Zusätzliches Branding-CSS",
+            "category": "sonstiges",
+            "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
+            "default": "",
+            "format": {
+                "typ": "string",
+                "laenge": 10000
+            },
+            "erforderlich": "nein"
+        },
+        "brandingCSSFile": {
+            "label": "Branding-CSS-Datei",
+            "category": "sonstiges",
+            "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
+            "default": "",
+            "format": {
+                "typ": "url",
+                "laenge": 500
+            },
+            "erforderlich": "nein"
         }
-      ]
-    },
-    "proxyAktiv": {
-      "label": "ODAS-Proxy aktiv?",
-      "category": "datenherkunft",
-      "hilfe": "Legt fest, ob Datenabrufe direkt oder ueber den ODAS-CORS-Proxy /app/odp-data erfolgen.",
-      "format": {
-        "typ": "dropdown",
-        "optionen": [
-          "nein",
-          "ja"
-        ]
-      },
-      "default": "nein",
-      "erforderlich": "ja"
-    },
-    "weiterfuehrendeLinks": {
-      "label": "Weiterfuehrende Links",
-      "category": "beschreibung",
-      "hilfe": "Verwandte Datensaetze / Hintergrundquellen (HTML/Markdown). Leer = ausgeblendet.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": "- [PEGELONLINE (WSV)](https://www.pegelonline.wsv.de/)\n- [Open Data App Store](https://open-data-app-store.de)",
-      "erforderlich": "nein"
-    },
-    "datenquelleHinweis": {
-      "label": "Methodik / Datenquelle-Hinweis",
-      "category": "beschreibung",
-      "hilfe": "Herkunft, Erhebungsmethode und Limitierungen (HTML/Markdown). Leer = ausgeblendet.",
-      "format": {
-        "typ": "markdown"
-      },
-      "default": "Die Pegeldaten stammen von [PEGELONLINE](https://www.pegelonline.wsv.de/), dem bundesweiten Pegelportal der Wasserstraßen- und Schifffahrtsverwaltung des Bundes (WSV). Die Messwerte werden aus den CKAN-DataStore-Ressourcen des konfigurierten Open-Data-Portals geladen und alle fünf Minuten aktualisiert.\n\nAngezeigt werden die in der Quelle verfügbaren Messstellen und Messwerte; Vollständigkeit und Aktualität hängen vom Datenbestand der angebundenen PEGELONLINE-Schnittstelle ab.",
-      "erforderlich": "nein"
-    },
-    "datenStand": {
-      "label": "Datenstand",
-      "category": "beschreibung",
-      "hilfe": "Freitext-Hinweis zum Stand der Daten. Leer = ausgeblendet.",
-      "format": {
-        "typ": "string"
-      },
-      "default": "Stand: laufend von PEGELONLINE (WSV)",
-      "erforderlich": "nein"
-    },
-    "sprache": {
-      "label": "Sprache der App",
-      "category": "allgemein",
-      "hilfe": "Angabe der App-Sprache.",
-      "format": {
-        "typ": "dropdown",
-        "optionen": [
-          "de"
-        ]
-      },
-      "default": "de",
-      "erforderlich": "ja"
-    },
-    "brandingCSS": {
-      "label": "Zusätzliches Branding-CSS",
-      "category": "sonstiges",
-      "hilfe": "Optionaler CSS-Code für die konkrete App-Instanz.",
-      "default": "",
-      "format": {
-        "typ": "string",
-        "laenge": 10000
-      },
-      "erforderlich": "nein"
-    },
-    "brandingCSSFile": {
-      "label": "Branding-CSS-Datei",
-      "category": "sonstiges",
-      "hilfe": "Optionale URL zu einer zusätzlichen CSS-Datei für die konkrete App-Instanz.",
-      "default": "",
-      "format": {
-        "typ": "url",
-        "laenge": 500
-      },
-      "erforderlich": "nein"
     }
-  }
 }
