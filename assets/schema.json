@@ -8,74 +8,114 @@
       "name": "pegel_id",
       "title": "Pegel-ID",
       "type": "string",
-      "description": "Eindeutige ID der Messstelle aus den Stammdaten."
+      "description": "Eindeutige ID der Messstelle aus den Stammdaten.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "name",
       "title": "Messstelle",
       "type": "string",
-      "description": "Name der Pegel-Messstelle."
+      "description": "Name der Pegel-Messstelle.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "gewaesser",
       "title": "Gewaesser",
       "type": "string",
-      "description": "Name des Gewaessers."
+      "description": "Name des Gewaessers.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "standort",
       "title": "Standort",
       "type": "string",
-      "description": "Kommunaler Standort oder Ortsangabe."
+      "description": "Kommunaler Standort oder Ortsangabe.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "nummer",
       "title": "Amtliche Nummer",
       "type": "string",
-      "description": "Amtliche Nummer der Messstelle, falls vorhanden."
+      "description": "Amtliche Nummer der Messstelle, falls vorhanden.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "rechtswert",
       "title": "Rechtswert",
-      "type": "number",
-      "description": "Ost-Koordinate der Messstelle in EPSG:31467."
+      "type": "string",
+      "description": "Koordinate als Text mit Tausendertrennzeichen (z. B. „3,530,927.84\"); die App normalisiert zur Zahl.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "hochwert",
       "title": "Hochwert",
-      "type": "number",
-      "description": "Nord-Koordinate der Messstelle in EPSG:31467."
+      "type": "string",
+      "description": "Koordinate als Text mit Tausendertrennzeichen (z. B. „3,530,927.84\"); die App normalisiert zur Zahl.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "zeitstempel",
       "title": "Zeitstempel",
       "type": "datetime",
-      "description": "Zeitpunkt der aktuellsten beruecksichtigten Messung."
+      "description": "Zeitpunkt der aktuellsten beruecksichtigten Messung.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "pegelstand_m",
       "title": "Pegelstand in Metern",
       "type": "number",
-      "description": "Normalisierter Pegelstand in Metern."
+      "description": "Normalisierter Pegelstand in Metern.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "trend",
       "title": "Trend",
       "type": "string",
-      "description": "Aus den letzten beiden Messwerten abgeleiteter Trend: steigend, fallend, stabil oder unbekannt."
+      "description": "Aus den letzten beiden Messwerten abgeleiteter Trend: steigend, fallend, stabil oder unbekannt.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "alarmstatus",
       "title": "Alarmstatus",
       "type": "string",
-      "description": "Status auf Basis der lokal im Browser gesetzten Alarmschwelle."
+      "description": "Status auf Basis der lokal im Browser gesetzten Alarmschwelle.",
+      "constraints": {
+        "required": false
+      }
     },
     {
       "name": "pegelonline_url",
       "title": "PEGELONLINE-Link",
       "type": "string",
       "format": "uri",
-      "description": "Optionaler Direktlink zur PEGELONLINE-Detailseite."
+      "description": "Optionaler Direktlink zur PEGELONLINE-Detailseite.",
+      "constraints": {
+        "required": false
+      }
     }
+  ],
+  "$schema": "https://frictionlessdata.io/schemas/table-schema.json",
+  "missingValues": [
+    ""
   ]
 }

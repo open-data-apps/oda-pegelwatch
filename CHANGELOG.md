@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.1 - 2026-09-07
+- **FIX:** Frictionless-Härtung: `$schema`/`missingValues` ergänzt; `rechtswert`/`hochwert` auf `string` korrigiert (Quelle liefert Tausendertrennzeichen); `beispiel-url` zeigt auf Endpunkt; 08-25-Migration verifiziert (keine ResourceId-Keys). Beide datastore-Defaults bleiben (4B-Ausnahme, Rot-Beleg je Slot).
+
 ## 1.29.0 - 2026-08-25
 - **CHG:** Proxy-Aufruf sendet die vollständige Ziel-URL statt nur Pfad+Query, damit die neue Origin-Allowlist-Prüfung der ODAS-Plattform greift (bisher implizite Auflösung gegen den ersten konfigurierten `apiurl`).
 - **FIX:** Toter Anbieter-Shortcode in Kontakt/Impressum ersetzt (`{{odp.anbieter.url-extern}}` → `{{odp.anbieter.url}}`).
