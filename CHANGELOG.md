@@ -1,6 +1,7 @@
 # Changelog - Pegelwatch
 
 ## 1.29.1 - 2026-09-07
+- **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-dkan-ds) für beide Quellen vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.29.1 -> 1.29.2).
 - **FIX:** Frictionless-Härtung: `$schema`/`missingValues` ergänzt; `rechtswert`/`hochwert` auf `string` korrigiert (Quelle liefert Tausendertrennzeichen); `beispiel-url` zeigt auf Endpunkt; 08-25-Migration verifiziert (keine ResourceId-Keys). Beide datastore-Defaults bleiben (4B-Ausnahme, Rot-Beleg je Slot).
 
 ## 1.29.0 - 2026-08-25

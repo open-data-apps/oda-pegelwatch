@@ -112,8 +112,33 @@ function app(configdata = {}, enclosingHtmlDivElement) {
     /^<.*>$/.test(quelleMessstellen) ||
     /^<.*>$/.test(quelleMesswerte)
   ) {
-    enclosingHtmlDivElement.innerHTML =
-      '<div class="alert alert-info" role="alert">Es ist keine Datenquelle konfiguriert.</div>';
+    renderOdasFehler(
+      enclosingHtmlDivElement,
+      new Error("Keine Datenquelle konfiguriert."),
+      {
+        url: quelleMessstellen,
+        label: "Pegel-Messstellen-API",
+        typLabel: "Tabellen-API mit Daten-ID",
+        erwarteterTyp: "ckan-dkan-ds",
+      },
+    );
+    return null;
+  }
+
+  // Variante A (F-92): Typprüfung vor dem ersten Fetch (beide Quellen).
+  const pegelKontext = {
+    label: "Pegel-Messstellen-API",
+    typLabel: "Tabellen-API mit Daten-ID",
+    erwarteterTyp: "ckan-dkan-ds",
+  };
+  const typWarnMessstellen = validateUrlTypErwartung(quelleMessstellen, "ckan-dkan-ds");
+  if (typWarnMessstellen) {
+    renderOdasFehler(enclosingHtmlDivElement, new Error(typWarnMessstellen), { url: quelleMessstellen, ...pegelKontext });
+    return null;
+  }
+  const typWarnMesswerte = validateUrlTypErwartung(quelleMesswerte, "ckan-dkan-ds");
+  if (typWarnMesswerte) {
+    renderOdasFehler(enclosingHtmlDivElement, new Error(typWarnMesswerte), { url: quelleMesswerte, label: "Pegel-Messwerte-API", typLabel: "Tabellen-API mit Daten-ID", erwarteterTyp: "ckan-dkan-ds" });
     return null;
   }
 
@@ -1417,20 +1442,12 @@ function renderInlineError(container, error, uid) {
 }
 
 function renderFatalError(container, config, error) {
-  container.innerHTML = `
-    <section class="pegelwatch-shell">
-      <div class="alert alert-danger" role="alert">
-        <h1 class="h4 alert-heading">Pegeldaten konnten nicht geladen werden</h1>
-        <p>
-          Bitte pruefe die CKAN-Action-API, die beiden Ressourcen-IDs und den Proxy-Schalter.
-          Bei CORS-Problemen kann die Instanz-Konfiguration <code>proxyAktiv</code> auf <code>ja</code> gesetzt werden.
-        </p>
-        <hr>
-        <p class="mb-2"><strong>Modus:</strong> ${isOdasProxyEnabled(config) ? "ODAS-Proxy" : "Direkter Abruf"}</p>
-        <p class="mb-0"><strong>Fehler:</strong> <code>${escapeHtml(error.message)}</code></p>
-      </div>
-    </section>
-  `;
+  renderOdasFehler(container, error, {
+    url: String((config && config.messstellenUrl) || "").trim(),
+    label: "Pegel-Messstellen-API",
+    typLabel: "Tabellen-API mit Daten-ID",
+    erwarteterTyp: "ckan-dkan-ds",
+  });
 }
 
 function setRefreshBusy(container, silent, uid) {
