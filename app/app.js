@@ -287,29 +287,6 @@ function loadScript(url) {
  * Wie loadCss, gibt aber eine Promise zurück, die auflöst wenn die CSS geladen ist.
  * Wird für Leaflet-CSS genutzt, damit die Map erst nach dem CSS-Load initialisiert wird.
  */
-function loadCssAsync(url) {
-  if (typeof document === "undefined") {
-    return Promise.resolve();
-  }
-  if (document.querySelector(`link[href="${url}"]`)) {
-    return Promise.resolve();
-  }
-  if (dependencyCache[url]) {
-    return dependencyCache[url];
-  }
-
-  dependencyCache[url] = new Promise((resolve) => {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = url;
-    link.onload = resolve;
-    link.onerror = resolve; // Im Fehlerfall trotzdem fortfahren
-    document.head.appendChild(link);
-  });
-
-  return dependencyCache[url];
-}
-
 async function loadDataAndRender(container, state, silent) {
   setRefreshBusy(container, silent, state.uid);
 
