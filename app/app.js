@@ -175,7 +175,9 @@ function app(configdata = {}, enclosingHtmlDivElement) {
  * Diese Funktion kann Bibliotheken und benoetigte Skripte laden.
  * App-spezifische Bibliotheken werden dynamisch in loadDependencies() geladen.
  */
-function addToHead() {}
+function addToHead() {
+  return ``;
+}
 
 function normalizeAppConfig(config = {}) {
   return {
@@ -245,7 +247,10 @@ function teardownPegelwatch(container) {
 }
 
 function loadDependencies() {
-  loadCss("app.css?v=1.3.0");
+  // PW-B2: app.css wird bereits von app/index.html eingebunden. Der frueher
+  // zusaetzliche loadCss("app.css?v=1.3.0") holte dieselbe Datei unter einer
+  // zweiten URL (doppelter Request, doppelte Stylesheet-Anwendung) und trug
+  // einen seit Langem veralteten Versionsstring.
   return Promise.all([
     loadScript(PEGELWATCH_DEPENDENCIES.chartJs),
   ]);
@@ -276,20 +281,6 @@ function loadScript(url) {
   });
 
   return dependencyCache[url];
-}
-
-function loadCss(url) {
-  if (typeof document === "undefined") {
-    return;
-  }
-  if (document.querySelector(`link[href="${url}"]`)) {
-    return;
-  }
-
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = url;
-  document.head.appendChild(link);
 }
 
 /**
@@ -377,8 +368,20 @@ async function fetchCkanRecords(config, targetUrl, limit, label, extraParams = {
   let allRecords = [];
   let offset = 0;
   const pageSize = 500;
+  // PW-B1: Notbremse wie in den uebrigen Apps. Ohne sie liefe die Schleife
+  // endlos, wenn CKAN ein zu grosses `total` meldet oder `offset` ignoriert und
+  // dauerhaft volle Seiten liefert (der Messwerte-Abruf laeuft mit limit=null).
+  const MAX_SEITEN = 1000;
+  let seiten = 0;
 
   while (true) {
+    seiten += 1;
+    if (seiten > MAX_SEITEN) {
+      console.warn(
+        `Pegelwatch: Paginierung fuer ${label} nach ${MAX_SEITEN} Seiten abgebrochen (Quelle liefert vermutlich endlos volle Seiten).`,
+      );
+      break;
+    }
     let currentLimit = pageSize;
     if (typeof limit === "number" && limit > 0) {
       currentLimit = Math.min(pageSize, limit - allRecords.length);
@@ -687,15 +690,6 @@ function renderOdasFehler(container, error, kontext = {}) {
   const titel = kontext.leer ? "Keine Datensätze gefunden." : info.titel;
   const alertClass = kontext.leer ? "alert-info" : info.alertClass;
   container.innerHTML = `<div class="alert ${alertClass}" role="alert"><strong>${escapeHtml(titel)}</strong><p class="mb-1">${escapeHtml(info.hinweis)}</p>${urlZeile}<details class="small"><summary>Details</summary><code>${escapeHtml(info.detail || String(error))}</code></details></div>`;
-}
-
-function isLeerErgebnis(json) {
-  if (!json) return true;
-  if (Array.isArray(json) && json.length === 0) return true;
-  if (Array.isArray(json.records) && json.records.length === 0) return true;
-  if (Array.isArray(json.results) && json.results.length === 0) return true;
-  if (json.result && Array.isArray(json.result.records) && json.result.records.length === 0) return true;
-  return false;
 }
 
 

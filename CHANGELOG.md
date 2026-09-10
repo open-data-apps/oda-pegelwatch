@@ -1,5 +1,11 @@
 # Changelog - Pegelwatch
 
+## 1.29.3 - 2026-09-10
+- **FIX (PW-B1):** `fetchCkanRecords()` lief in einer `while (true)`-Schleife ohne Seitenzähler. Der Messwerte-Abruf nutzt `limit = null` („alles"), also war der gefährliche Modus der Standardpfad: ein Endpunkt, der `offset` ignoriert und dauerhaft volle Seiten liefert, hätte endlos weiter geladen und Speicher gesammelt. Jetzt Abbruch nach 1000 Seiten mit Warnung.
+- **FIX (PW-B2):** `loadDependencies()` lud `app.css?v=1.3.0` zusätzlich zur bereits in `app/index.html` eingebundenen `app.css` — zwei URLs für dieselbe Datei (doppelter Request, doppelte Stylesheet-Anwendung) plus ein seit Langem veralteter Versionsstring. Der Zusatzaufruf ist entfernt; der dadurch verwaiste Helfer `loadCss()` ebenfalls.
+- **TECH (PW-B3):** `isLeerErgebnis` entfernt; `addToHead` gibt `""` statt `undefined` zurück.
+- **Unverändert:** der eigene Vorgänger-Cleanup (`previousState.disposed` + `teardownPegelwatch`), der Intervall-Selbstheilungspfad bei entferntem Container und der `dependencyCache`, der Fehlversuche bereits korrekt zurücksetzt.
+
 ## 1.29.2 - 2026-09-08
 - **FIX:** Variante-A-Verdrahtung (F-92): Typprüfung (ckan-dkan-ds) für beide Quellen vor dem ersten Fetch; Quellen- und Ladefehler über `renderOdasFehler` (1.29.1 -> 1.29.2).
 
