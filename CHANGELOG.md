@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.5 - 2026-10-02
+- ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
+
 ## 1.29.4 - 2026-09-10
 - **TECH (PW-B4):** ungenutzten Helfer `loadCssAsync()` entfernt (seit dem Entfall der Leaflet-Karte tot, ~15 Zeilen).
 
