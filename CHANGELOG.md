@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.8 - 2026-10-13
+- FIX: F-148 (Nachbesserung): Messzeiten in der Sommerzeit-Umstellungslücke, ISO-Zeitstempel mit Leerzeichen und deutsche Angaben mit „Uhr“ werden gelesen statt still verworfen.
+
 ## 1.29.7 - 2026-10-13
 - ENH: Datenvertrag `assets/datenvertraege.json` für die Store-Datenprüfung (`daten.pruefung`): Beide CKAN-Quellen werden je Slot mit Frictionless geprüft – `pegel-messstellen` gegen `assets/schemas/messstellen.json` (Seitenprofil `ckan-offset-v1`, höchstens 100 Messstellen wie in der App), `pegel-messwerte` gegen `assets/schemas/messwerte.json` (Sortierung `zeitstempel desc`, Seiten zu 500). `pegel_id`, `messstelle_id`, `zeitstempel` und `pegelstand_in_m` sind Pflicht; Anzeige-Felder der Messstellen sind optional. Die Verknüpfung bleibt App-Sache; `assets/schema.json` ist unverändert. Testfälle unter `tests/datenvertrag/` (Fixtures aus dem Live-Abruf vom 2026-10-13 gekürzt abgeleitet; Maximum- und Fehlerfälle synthetisch).
 

@@ -812,14 +812,16 @@ function parsePegelTimestamp(value) {
   // F-148: Deutsche Formate vor Date.parse prüfen; Überläufe nicht normalisieren.
   function localTimestamp(year, month, day, hour, minute, second = 0) {
     const parts = [year, month, day, hour, minute, second].map(Number);
-    const date = new Date(...parts);
-    const actual = [date.getFullYear(), date.getMonth(), date.getDate(),
-      date.getHours(), date.getMinutes(), date.getSeconds()];
-    return parts.every((part, index) => part === actual[index]) ? date.getTime() : null;
+    // Kalendergültigkeit zeitzonenfrei prüfen; eine Ortszeit in der Sommerzeit-Lücke
+    // (z. B. 02:30) gilt nach RFC 5545 3.3.5 mit dem Offset vor der Lücke.
+    const utc = new Date(Date.UTC(...parts));
+    const actual = [utc.getUTCFullYear(), utc.getUTCMonth(), utc.getUTCDate(),
+      utc.getUTCHours(), utc.getUTCMinutes(), utc.getUTCSeconds()];
+    return parts.every((part, index) => part === actual[index]) ? new Date(...parts).getTime() : null;
   }
 
   const germanNumeric = raw.match(
-    /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:,\s*|\s+)(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+    /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:,\s*|\s+)(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*Uhr)?$/i
   );
   if (germanNumeric) {
     const [, day, month, year, hour, minute, second] = germanNumeric;
@@ -827,7 +829,7 @@ function parsePegelTimestamp(value) {
   }
 
   const germanLong = raw.match(
-    /^(?:[A-Za-zÄÖÜäöü]{2,}\.?,?\s*)?(\d{1,2})\.\s*([A-Za-zÄÖÜäöü]+)\s+(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+    /^(?:[A-Za-zÄÖÜäöü]{2,}\.?,?\s*)?(\d{1,2})\.\s*([A-Za-zÄÖÜäöü]+)\s+(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*Uhr)?$/i
   );
   if (germanLong) {
     const [, day, monthName, year, hour, minute, second] = germanLong;
@@ -836,8 +838,8 @@ function parsePegelTimestamp(value) {
   }
 
   // Nur ISO statt browserabhängiger US-/Freitext-Heuristiken.
-  if (!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(raw)) return null;
-  const direct = Date.parse(raw);
+  if (!/^\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(raw)) return null;
+  const direct = Date.parse(raw.replace(" ", "T"));
   return Number.isNaN(direct) ? null : direct;
 }
 
