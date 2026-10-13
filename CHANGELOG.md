@@ -1,5 +1,9 @@
 # Changelog - Pegelwatch
 
+## 1.29.6 - 2026-10-08
+- FIX: F-148: Deutsche Datumsformate vor ISO parsen und Datumskomponenten validieren; Februarwerte werden nicht als Januarwerte einsortiert.
+- FIX: F-142: Messstellenlimit und unvollständige API-Fenster mit geladener/Gesamtmenge sichtbar ausweisen.
+
 ## 1.29.5 - 2026-10-02
 - ENH: Verwendete ODAS-Dienste in `odas-services` deklariert.
 

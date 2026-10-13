@@ -319,6 +319,7 @@ async function loadDataAndRender(container, state, silent) {
 
     state.stations = stationsResponse;
     state.measurements = measurementsResponse;
+    state.ladeHinweis = [stationsResponse.ladeHinweis, measurementsResponse.ladeHinweis].filter(Boolean).join(" ");
     state.joinedStations = mergeStationsWithMeasurements(state.stations, state.measurements);
     state.lastLoadedAt = new Date();
 
@@ -343,6 +344,7 @@ async function loadDataAndRender(container, state, silent) {
 
 async function fetchCkanRecords(config, targetUrl, limit, label, extraParams = {}, onProgress) {
   let allRecords = [];
+  let reportedTotal = null;
   let offset = 0;
   const pageSize = 500;
   // PW-B1: Notbremse wie in den uebrigen Apps. Ohne sie liefe die Schleife
@@ -381,6 +383,7 @@ async function fetchCkanRecords(config, targetUrl, limit, label, extraParams = {
     }
 
     const records = data.result.records;
+    reportedTotal = Number.isFinite(Number(data.result.total)) ? Number(data.result.total) : reportedTotal;
     const total = typeof limit === "number" && limit > 0 ? Math.min(limit, data.result.total || 0) : (data.result.total || 0);
     allRecords.push(...records);
 
@@ -395,6 +398,12 @@ async function fetchCkanRecords(config, targetUrl, limit, label, extraParams = {
     offset += pageSize;
   }
 
+  // F-142: Insbesondere das interne Messstellenlimit darf nicht unsichtbar kürzen.
+  if (reportedTotal !== null && allRecords.length < reportedTotal) {
+    allRecords.ladeHinweis = "Teilbestand " + label + ": " + allRecords.length + " von " +
+      reportedTotal + " geladen" + (limit ? " (Abruflimit " + limit + ")" : "") +
+      ". Auswahl, Kennzahlen und Verläufe beziehen sich nur auf die geladenen Daten.";
+  }
   return allRecords;
 }
 
@@ -800,43 +809,36 @@ function parsePegelTimestamp(value) {
     return null;
   }
 
-  const direct = Date.parse(raw);
-  if (!Number.isNaN(direct)) {
-    return direct;
-  }
-
-  const germanLong = raw.match(
-    /(?:[A-Za-zÄÖÜäöü]{2,}\.?,?\s*)?(\d{1,2})\.\s*([A-Za-zÄÖÜäöü]+)\s+(\d{4})\s+(\d{1,2}):(\d{2})/
-  );
-  if (germanLong) {
-    const [, day, monthName, year, hour, minute] = germanLong;
-    const month = GERMAN_MONTHS[monthName.toLowerCase()];
-    if (month !== undefined) {
-      return new Date(
-        Number(year),
-        month,
-        Number(day),
-        Number(hour),
-        Number(minute)
-      ).getTime();
-    }
+  // F-148: Deutsche Formate vor Date.parse prüfen; Überläufe nicht normalisieren.
+  function localTimestamp(year, month, day, hour, minute, second = 0) {
+    const parts = [year, month, day, hour, minute, second].map(Number);
+    const date = new Date(...parts);
+    const actual = [date.getFullYear(), date.getMonth(), date.getDate(),
+      date.getHours(), date.getMinutes(), date.getSeconds()];
+    return parts.every((part, index) => part === actual[index]) ? date.getTime() : null;
   }
 
   const germanNumeric = raw.match(
-    /(\d{1,2})\.(\d{1,2})\.(\d{4})(?:,\s*|\s+)(\d{1,2}):(\d{2})/
+    /^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:,\s*|\s+)(\d{1,2}):(\d{2})(?::(\d{2}))?$/
   );
   if (germanNumeric) {
-    const [, day, month, year, hour, minute] = germanNumeric;
-    return new Date(
-      Number(year),
-      Number(month) - 1,
-      Number(day),
-      Number(hour),
-      Number(minute)
-    ).getTime();
+    const [, day, month, year, hour, minute, second] = germanNumeric;
+    return localTimestamp(year, Number(month) - 1, day, hour, minute, second);
   }
 
-  return null;
+  const germanLong = raw.match(
+    /^(?:[A-Za-zÄÖÜäöü]{2,}\.?,?\s*)?(\d{1,2})\.\s*([A-Za-zÄÖÜäöü]+)\s+(\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+  );
+  if (germanLong) {
+    const [, day, monthName, year, hour, minute, second] = germanLong;
+    const month = GERMAN_MONTHS[monthName.toLowerCase()];
+    return month === undefined ? null : localTimestamp(year, month, day, hour, minute, second);
+  }
+
+  // Nur ISO statt browserabhängiger US-/Freitext-Heuristiken.
+  if (!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(raw)) return null;
+  const direct = Date.parse(raw);
+  return Number.isNaN(direct) ? null : direct;
 }
 
 function calculateTrend(latest, previous) {
@@ -920,6 +922,7 @@ function renderDashboard(container, state) {
   container.innerHTML = `
     <section class="pegelwatch-shell">
       <div id="pegelwatch-alerts-${state.uid}"></div>
+      ${state.ladeHinweis ? '<div class="alert alert-warning" role="alert">' + escapeHtml(state.ladeHinweis) + '</div>' : ''}
       
       <header class="pegelwatch-header mb-3">
         <div>
