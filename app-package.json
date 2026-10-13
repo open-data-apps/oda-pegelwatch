@@ -3,7 +3,7 @@
   "app-entwickler-name": "ondics-gmbh",
   "name-in-url": "pegelwatch",
   "name": "Pegelwatch",
-  "app-version": "1.29.6",
+  "app-version": "1.29.7",
   "app-package-version": "2",
   "odas-app-icon": "assets/odas-app-icon.svg",
   "app-icon": "app/logo_ondics.png",
@@ -62,6 +62,7 @@
     "assets/Mobile_Screenshot.png"
   ],
   "daten": {
+    "pruefung": "assets/datenvertraege.json",
     "beschreibung": "Die App verarbeitet zwei CKAN-DataStore-Ressourcen: Messstellen-Stammdaten mit Koordinaten und PEGELONLINE-Verweisen sowie dynamische Pegel-Messwerte mit Zeitstempel und Wasserstand. Die verknuepfte Ansicht wird in assets/schema.json beschrieben.",
     "schema": "assets/schema.json",
     "beispiel": "Zwei CKAN-Datastore-Ressourcen (Messstellen + Messwerte) mit result.records[] (JSON); Beispiel-URL zeigt die Messstellen.",
