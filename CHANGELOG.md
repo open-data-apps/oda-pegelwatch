@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.9 - 2026-10-13
+- FIX: Standard-Fehleranzeige gibt präzisere Tipps: ein „Failed to fetch“ ohne Proxy-Kontext erhält einen Netzwerk-Hinweis statt `proxyAktiv`; der 404-Hinweis gilt nur noch für echte HTTP-404-Antworten und nennt den lokal fehlenden Proxy/Relay statt pauschal „Datensatz auf dem Portal nicht gefunden“.
+
 ## 1.29.8 - 2026-10-13
 - FIX: F-148 (Nachbesserung): Messzeiten in der Sommerzeit-Umstellungslücke, ISO-Zeitstempel mit Leerzeichen und deutsche Angaben mit „Uhr“ werden gelesen statt still verworfen.
 
