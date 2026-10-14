@@ -1,93 +1,36 @@
 {
   "version": "1",
-  "table-schema-version": "1.0",
   "quellen": {
     "pegel-messstellen": {
-      "bedarf": "pflicht",
-      "zugriff": {
-        "typ": "direkt"
-      },
-      "abfrage": {
-        "seiten": {
-          "profil": "ckan-offset-v1",
-          "groesse": 500,
-          "maximum": 100
-        }
-      },
-      "pruefungen": [
-        {
-          "name": "messstellen",
-          "ressource": {
-            "typ": "antwort"
-          },
-          "varianten": [
-            {
-              "name": "ckan-json",
-              "erkennung": {
-                "format": "json",
-                "array": "/result/records"
-              },
-              "leser": {
-                "profil": "json-v1"
-              },
-              "verfahren": "frictionless",
-              "zeilen": "/result/records",
-              "schema": "assets/schemas/messstellen.json",
-              "felder": {
-                "optional": [
-                  "name",
-                  "gewaesser",
-                  "nummer",
-                  "standort",
-                  "pegelonline_url",
-                  "aktiv"
-                ]
-              }
-            }
-          ]
-        }
-      ]
+      "leser": "json-v1",
+      "zeilen": "/result/records",
+      "schema": "assets/schemas/messstellen.json",
+      "optional": [
+        "name",
+        "gewaesser",
+        "nummer",
+        "standort",
+        "pegelonline_url",
+        "aktiv"
+      ],
+      "seiten": {
+        "profil": "ckan-offset-v1",
+        "groesse": 500,
+        "maximum": 100
+      }
     },
     "pegel-messwerte": {
-      "bedarf": "pflicht",
-      "zugriff": {
-        "typ": "direkt"
+      "leser": "json-v1",
+      "zeilen": "/result/records",
+      "schema": "assets/schemas/messwerte.json",
+      "parameter": {
+        "sort": "zeitstempel desc"
       },
-      "abfrage": {
-        "parameter": {
-          "sort": {
-            "literal": "zeitstempel desc"
-          }
-        },
-        "seiten": {
-          "profil": "ckan-offset-v1",
-          "groesse": 500,
-          "maximum": null
-        }
-      },
-      "pruefungen": [
-        {
-          "name": "messwerte",
-          "ressource": {
-            "typ": "antwort"
-          },
-          "varianten": [
-            {
-              "name": "ckan-json",
-              "erkennung": {
-                "format": "json",
-                "array": "/result/records"
-              },
-              "leser": {
-                "profil": "json-v1"
-              },
-              "verfahren": "frictionless",
-              "zeilen": "/result/records",
-              "schema": "assets/schemas/messwerte.json"
-            }
-          ]
-        }
-      ]
+      "seiten": {
+        "profil": "ckan-offset-v1",
+        "groesse": 500,
+        "maximum": null
+      }
     }
   }
 }
