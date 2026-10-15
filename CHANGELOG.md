@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.14 - 2026-10-15
+- FIX: Mobile Ansicht (unter 576 px): Die Messstellen-Auswahl nutzt wieder die normale Schriftgröße (16 px), damit iOS-Geräte beim Antippen nicht mehr in die Seite hineinzoomen.
+
 ## 1.29.13 - 2026-10-15
 - FIX: Kopfzeile bei 360 px ohne Überlauf (Template): Logo- und Burger-Spalte passen sich der Breite an, das Menü-Symbol ragt nicht mehr über den rechten Rand. Keine Änderung an App-Code oder Konfiguration.
 
