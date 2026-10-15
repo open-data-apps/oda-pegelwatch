@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.12 - 2026-10-15
+- FIX: Mobile Ansicht (unter 576 px): Die Messstellen-Auswahl steht über den Vor-/Zurück-Knöpfen auf voller Breite statt in einer Zeile mit ihnen; lange Namen wie „OBERESSLINGEN SCHLEUSE UP“ sind nicht mehr abgeschnitten. Ab 576 px unverändert.
+
 ## 1.29.11 - 2026-10-15
 - DOCS: Neue Store-Screenshots: je drei Desktop- (1440 × 1000) und Mobile-Aufnahmen (390 × 844) der aktuellen App, aufgenommen auf der Dev-Instanz. Bisherige Bilder nach `docs/screenshots/archive/2026-10-13/` verschoben. Keine Änderung an App-Code oder Konfiguration.
 

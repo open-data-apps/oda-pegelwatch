@@ -392,6 +392,18 @@
     max-width: 300px;
   }
 }
+@media (max-width: 575.98px) {
+  .pegel-nav-bar {
+    flex-wrap: wrap;
+  }
+  .pegel-nav-bar select {
+    order: -1;
+    flex: 1 1 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-size: 0.875rem;
+  }
+}
 
 /* Info Bar */
 .pegel-info-bar {
