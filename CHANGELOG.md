@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.13 - 2026-10-15
+- FIX: Kopfzeile bei 360 px ohne Überlauf (Template): Logo- und Burger-Spalte passen sich der Breite an, das Menü-Symbol ragt nicht mehr über den rechten Rand. Keine Änderung an App-Code oder Konfiguration.
+
 ## 1.29.12 - 2026-10-15
 - FIX: Mobile Ansicht (unter 576 px): Die Messstellen-Auswahl steht über den Vor-/Zurück-Knöpfen auf voller Breite statt in einer Zeile mit ihnen; lange Namen wie „OBERESSLINGEN SCHLEUSE UP“ sind nicht mehr abgeschnitten. Ab 576 px unverändert.
 
