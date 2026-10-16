@@ -1,5 +1,8 @@
 # Changelog - Pegelwatch
 
+## 1.29.15 - 2026-10-16
+- FIX: Datenvertrag für die Store-Datenprüfung des aufgegebenen Frictionless-Branches entfernt (`daten.pruefung`, `assets/datenvertraege.json`, `assets/schemas/`, Testfälle). Der Store prüft auf `dev` gegen `assets/schema.json`; die App selbst ist unverändert.
+
 ## 1.29.14 - 2026-10-15
 - FIX: Mobile Ansicht (unter 576 px): Die Messstellen-Auswahl nutzt wieder die normale Schriftgröße (16 px), damit iOS-Geräte beim Antippen nicht mehr in die Seite hineinzoomen.
 
